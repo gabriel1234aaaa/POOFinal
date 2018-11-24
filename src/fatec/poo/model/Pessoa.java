@@ -81,5 +81,65 @@ public abstract class Pessoa {
     public void setEmail(String Email) {
         this.Email = Email;
     }
+
+    public String getNome() {
+        return Nome;
+    }
+
+    public String getDataNasc() {
+        return DataNasc;
+    }
+
+    public String getEndereco() {
+        return Endereco;
+    }
+
+    public int getNumero() {
+        return Numero;
+    }
+
+    public String getBairro() {
+        return Bairro;
+    }
+
+    public String getCidade() {
+        return Cidade;
+    }
+
+    public String getEstado() {
+        return Estado;
+    }
+
+    public String getCEP() {
+        return CEP;
+    }
+
+    public String getTelefone() {
+        return Telefone;
+    }
+
+    public String getCelular() {
+        return Celular;
+    }
+
+    public String getSexo() {
+        return Sexo;
+    }
+
+    public String getEstadoCivil() {
+        return EstadoCivil;
+    }
+
+    public String getRG() {
+        return RG;
+    }
+
+    public String getCPF() {
+        return CPF;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
     
 }
