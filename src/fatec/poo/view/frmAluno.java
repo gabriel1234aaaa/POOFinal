@@ -5,6 +5,12 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoAluno;
+import fatec.poo.model.Aluno;
+import java.awt.HeadlessException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author 0030481711010
@@ -18,6 +24,45 @@ public class frmAluno extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void limparCampos() {
+        txtCPF.setValue("");
+        txtNome.setText("");
+        txtNome.setEnabled(false);
+        txtDataNascto.setValue("");
+        txtDataNascto.setEnabled(false);
+        cmbSexo.setSelectedIndex(0);
+        cmbSexo.setEnabled(false);
+        cmbEstadoCivil.setSelectedIndex(0);
+        cmbEstadoCivil.setEnabled(false);
+        cmbEscolaridade.setSelectedIndex(0);
+        cmbEscolaridade.setEnabled(false);
+        txtEndereco.setText("");
+        txtEndereco.setEnabled(false);
+        txtN.setText("");
+        txtN.setEnabled(false);
+        txtBairro.setText("");
+        txtBairro.setEnabled(false);
+        txtCEP.setValue("");
+        txtCEP.setEnabled(false);
+        txtCidade.setText("");
+        txtCidade.setEnabled(false);
+        cmbEstado.setSelectedIndex(0);
+        cmbEstado.setEnabled(false);
+        txtTelRes.setValue("");
+        txtTelRes.setEnabled(false);
+        txtRG.setValue("");
+        txtRG.setEnabled(false);
+        txtCelular.setValue("");
+        txtCelular.setEnabled(false);
+        txtEmail.setText("");
+        txtEmail.setEnabled(false);
+        txtCPF.setEnabled(true);
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+        btnSair.setEnabled(true);
+        txtCPF.requestFocus();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,8 +72,6 @@ public class frmAluno extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         lblCPF = new javax.swing.JLabel();
         txtCPF = new javax.swing.JFormattedTextField();
         lblNome = new javax.swing.JLabel();
@@ -43,7 +86,6 @@ public class frmAluno extends javax.swing.JFrame {
         txtBairro = new javax.swing.JTextField();
         lblCidade = new javax.swing.JLabel();
         txtCidade = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         lblEstado = new javax.swing.JLabel();
         cmbEstado = new javax.swing.JComboBox<>();
         lblRG = new javax.swing.JLabel();
@@ -68,12 +110,13 @@ public class frmAluno extends javax.swing.JFrame {
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
 
-        jLabel2.setText("jLabel2");
-
-        jFormattedTextField1.setText("jFormattedTextField1");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Aluno");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         lblCPF.setText("CPF");
 
@@ -89,15 +132,12 @@ public class frmAluno extends javax.swing.JFrame {
 
         lblSexo.setText("Sexo");
 
+        cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Feminino", "Masculino" }));
         cmbSexo.setEnabled(false);
-        cmbSexo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbSexoActionPerformed(evt);
-            }
-        });
 
         lblEstadoCivil.setText("Estado Civil");
 
+        cmbEstadoCivil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Casado(a)", "Divorciado(a)", "Solteiro(a)", "Viúvo(a)" }));
         cmbEstadoCivil.setEnabled(false);
 
         lblEndereco.setText("Endereço");
@@ -112,10 +152,9 @@ public class frmAluno extends javax.swing.JFrame {
 
         txtCidade.setEnabled(false);
 
-        jLabel1.setText("jLabel1");
-
         lblEstado.setText("Estado");
 
+        cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" }));
         cmbEstado.setEnabled(false);
 
         lblRG.setText("RG");
@@ -142,6 +181,7 @@ public class frmAluno extends javax.swing.JFrame {
 
         lblEscolaridade.setText("Escolaridade");
 
+        cmbEscolaridade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ensino Médio Completo", "Ensino Médio Cursando", "Ensino Superior Completo", "Ensino Superior Cursando", "Ensino Técnico Completo", "Ensino Técnico Cursando" }));
         cmbEscolaridade.setEnabled(false);
 
         lblN.setText("N°");
@@ -160,21 +200,16 @@ public class frmAluno extends javax.swing.JFrame {
         lblTelRes.setText("Tel. Res");
 
         try {
-            txtTelRes.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)####-####")));
+            txtTelRes.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) ####-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
         txtTelRes.setEnabled(false);
-        txtTelRes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTelResActionPerformed(evt);
-            }
-        });
 
         lblCelular.setText("Celular");
 
         try {
-            txtCelular.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)#####-####")));
+            txtCelular.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -182,21 +217,46 @@ public class frmAluno extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
         btnInserir.setEnabled(false);
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -231,15 +291,10 @@ public class frmAluno extends javax.swing.JFrame {
                                     .addComponent(txtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(52, 52, 52)
-                                                .addComponent(jLabel1))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(lblEstado)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(cmbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(lblEstado)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lblEscolaridade)
@@ -286,42 +341,39 @@ public class frmAluno extends javax.swing.JFrame {
                     .addComponent(lblCPF)
                     .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblNome)
-                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblDataNascto)
-                            .addComponent(txtDataNascto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEstadoCivil)
-                            .addComponent(cmbEstadoCivil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblSexo)
-                            .addComponent(lblEscolaridade)
-                            .addComponent(cmbEscolaridade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblN)
-                            .addComponent(txtN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblBairro)
-                            .addComponent(txtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCEP)
-                            .addComponent(txtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblCidade)
-                            .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEstado)
-                            .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTelRes)
-                            .addComponent(txtTelRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabel1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNome)
+                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDataNascto)
+                    .addComponent(txtDataNascto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEstadoCivil)
+                    .addComponent(cmbEstadoCivil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSexo)
+                    .addComponent(lblEscolaridade)
+                    .addComponent(cmbEscolaridade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblN)
+                    .addComponent(txtN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBairro)
+                    .addComponent(txtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCEP)
+                    .addComponent(txtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCidade)
+                    .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEstado)
+                    .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTelRes)
+                    .addComponent(txtTelRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblRG)
@@ -345,13 +397,145 @@ public class frmAluno extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cmbSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSexoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbSexoActionPerformed
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        String cpf = txtCPF.getText().replaceAll("[^0-9]", "");
+        if (Aluno.validarCPF(cpf)) {
+            Aluno aluno = daoAln.consultar(cpf);
 
-    private void txtTelResActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelResActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTelResActionPerformed
+            txtCPF.setEnabled(false);
+            txtNome.setEnabled(true);
+            txtDataNascto.setEnabled(true);
+            cmbSexo.setEnabled(true);
+            cmbEstadoCivil.setEnabled(true);
+            cmbEscolaridade.setEnabled(true);
+            txtEndereco.setEnabled(true);
+            txtN.setEnabled(true);
+            txtBairro.setEnabled(true);
+            txtCEP.setEnabled(true);
+            txtCidade.setEnabled(true);
+            cmbEstado.setEnabled(true);
+            txtTelRes.setEnabled(true);
+            txtRG.setEnabled(true);
+            txtCelular.setEnabled(true);
+            txtEmail.setEnabled(true);
+            btnConsultar.setEnabled(false);
+
+            if (aluno != null) {
+                btnInserir.setEnabled(false);
+                btnAlterar.setEnabled(true);
+                btnExcluir.setEnabled(true);
+                txtNome.setText(aluno.getNome());
+                txtDataNascto.setText(aluno.getDataNasc());
+                cmbSexo.getModel().setSelectedItem(aluno.getSexo().equals("M") ? "Masculino" : "Feminino");
+                cmbEstadoCivil.getModel().setSelectedItem(aluno.getEstadoCivil() + "(a)");
+                cmbEscolaridade.getModel().setSelectedItem(aluno.getEscolaridade());
+                txtEndereco.setText(aluno.getEndereco());
+                txtN.setText(String.valueOf(aluno.getNumero()));
+                txtBairro.setText(aluno.getBairro());
+                txtCEP.setText(aluno.getCEP());
+                txtCidade.setText(aluno.getCidade());
+                cmbEstado.getModel().setSelectedItem(aluno.getEstado());
+                txtTelRes.setText(aluno.getTelefone());
+                txtRG.setText(aluno.getRG());
+                txtCelular.setText(aluno.getCelular());
+                txtEmail.setText(aluno.getEmail());
+            } else {
+                btnInserir.setEnabled(true);
+                btnAlterar.setEnabled(false);
+                btnExcluir.setEnabled(false);
+            }
+
+            txtNome.requestFocus();
+        } else {
+            JOptionPane.showMessageDialog(this, "Informe um CPF válido!", "CPF Inválido", JOptionPane.ERROR_MESSAGE);
+            txtCPF.requestFocus();
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        Conexao con = new Conexao("gabriel", "1");
+        con.setDriver("oracle.jdbc.driver.OracleDriver");
+        con.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        daoAln = new DaoAluno(con.conectar());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        try {
+            String cpf = txtCPF.getText().replaceAll("[^0-9]", "");
+            Aluno aluno = new Aluno(txtNome.getText(), cpf);
+            aluno.setDataNasc(txtDataNascto.getText().replaceAll("[^0-9]", ""));
+            aluno.setSexo(cmbSexo.getSelectedItem().equals("Feminino") ? "F" : "M");
+            aluno.setEstadoCivil(cmbEstadoCivil.getSelectedItem().toString().replace("(a)", ""));
+            aluno.setEscolaridade(cmbEscolaridade.getSelectedItem().toString());
+            aluno.setEndereco(txtEndereco.getText());
+            aluno.setNumero(Integer.parseInt(txtN.getText()));
+            aluno.setBairro(txtBairro.getText());
+            aluno.setCEP(txtCEP.getText().replaceAll("[^0-9]", ""));
+            aluno.setCidade(txtCidade.getText());
+            aluno.setEstado(cmbEstado.getSelectedItem().toString());
+            aluno.setTelefone(txtTelRes.getText().replaceAll("[^0-9]", ""));
+            aluno.setRG(txtRG.getText().replaceAll("[^0-9]", ""));
+            aluno.setCelular(txtCelular.getText().replaceAll("[^0-9]", ""));
+            aluno.setEmail(txtEmail.getText());
+
+            daoAln.inserir(aluno);
+
+            JOptionPane.showMessageDialog(this, "O Aluno foi inserido com sucesso!", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
+
+            limparCampos();
+        } catch (HeadlessException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        try {
+            String cpf = txtCPF.getText().replaceAll("[^0-9]", "");
+            Aluno aluno = new Aluno(txtNome.getText(), cpf);
+            aluno.setDataNasc(txtDataNascto.getText().replaceAll("[^0-9]", ""));
+            aluno.setSexo(cmbSexo.getSelectedItem().equals("Feminino") ? "F" : "M");
+            aluno.setEstadoCivil(cmbEstadoCivil.getSelectedItem().toString().replace("(a)", ""));
+            aluno.setEscolaridade(cmbEscolaridade.getSelectedItem().toString());
+            aluno.setEndereco(txtEndereco.getText());
+            aluno.setNumero(Integer.parseInt(txtN.getText()));
+            aluno.setBairro(txtBairro.getText());
+            aluno.setCEP(txtCEP.getText().replaceAll("[^0-9]", ""));
+            aluno.setCidade(txtCidade.getText());
+            aluno.setEstado(cmbEstado.getSelectedItem().toString());
+            aluno.setTelefone(txtTelRes.getText().replaceAll("[^0-9]", ""));
+            aluno.setRG(txtRG.getText().replaceAll("[^0-9]", ""));
+            aluno.setCelular(txtCelular.getText().replaceAll("[^0-9]", ""));
+            aluno.setEmail(txtEmail.getText());
+
+            daoAln.alterar(aluno);
+
+            JOptionPane.showMessageDialog(this, "O Aluno foi alterado com sucesso!", "Alteração", JOptionPane.INFORMATION_MESSAGE);
+
+            limparCampos();
+        } catch (HeadlessException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        try {
+            String cpf = txtCPF.getText().replaceAll("[^0-9]", "");
+            Aluno aluno = new Aluno(txtNome.getText(), cpf);
+
+            daoAln.excluir(aluno);
+
+            JOptionPane.showMessageDialog(this, "O Aluno foi excluído com sucesso!", "Exclusão", JOptionPane.INFORMATION_MESSAGE);
+
+            limparCampos();
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
 
     /**
      * @param args the command line arguments
@@ -398,9 +582,6 @@ public class frmAluno extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbEstado;
     private javax.swing.JComboBox<String> cmbEstadoCivil;
     private javax.swing.JComboBox<String> cmbSexo;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblBairro;
     private javax.swing.JLabel lblCEP;
     private javax.swing.JLabel lblCPF;
@@ -430,4 +611,5 @@ public class frmAluno extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtRG;
     private javax.swing.JFormattedTextField txtTelRes;
     // End of variables declaration//GEN-END:variables
+    DaoAluno daoAln;
 }

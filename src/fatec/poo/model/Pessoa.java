@@ -142,4 +142,35 @@ public abstract class Pessoa {
         return Email;
     }
     
+    public static boolean validarCPF(String cpf){
+        if(cpf.length() < 11){
+            return false;
+        }else{
+            int primeiroDigito = 0;
+            for (int i = 0; i < 9; i++) {
+                primeiroDigito += (cpf.charAt(i) - '0') * (i + 1);
+            }
+            primeiroDigito = primeiroDigito % 11;
+            if (primeiroDigito == 10) {
+                primeiroDigito = 0;
+            }
+            if(primeiroDigito == cpf.charAt(9) - '0'){
+                int segundoDigito = 0;
+                for (int i = 0; i < 10; i++) {
+                    segundoDigito += (cpf.charAt(i) - '0') * (11 - i);
+                }
+                segundoDigito = (segundoDigito * 10) % 11;
+                if (segundoDigito == 10) {
+                    segundoDigito = 0;
+                }
+                if(segundoDigito == cpf.charAt(10) - '0'){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }
+    }
 }

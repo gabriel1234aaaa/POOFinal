@@ -1,7 +1,6 @@
 package fatec.poo.control;
 
 import fatec.poo.model.Aluno;
-import fatec.poo.model.Pessoa;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,12 +21,12 @@ public class DaoAluno {
             ps = conn.prepareStatement("INSERT INTO PESSOA(CPF, NOME, DATANASC, "
                     + "ENDERECO, NUMERO, BAIRRO, CIDADE, ESTADO, CEP, TELEFONE, "
                     + "CELULAR, SEXO, ESTADOCIVIL, RG, EMAIL) "
-                    + "VALUES ('?', '?', '?', '?', '?', '?', '?', '?', "
-                    + "'?', '?', '?', '?', '?', '?', '?')");
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, "
+                    + "?, ?, ?, ?, ?, ?, ?)");
 
             ps.setString(1, aluno.getCPF());
             ps.setString(2, aluno.getNome());
-            ps.setString(3, aluno.getDataNasc().replace("/", ""));
+            ps.setString(3, aluno.getDataNasc());
             ps.setString(4, aluno.getEndereco());
             ps.setInt(5, aluno.getNumero());
             ps.setString(6, aluno.getBairro());
@@ -43,7 +42,7 @@ public class DaoAluno {
 
             ps.execute();
 
-            ps = conn.prepareStatement("INSERT INTO ALUNO(CPF, ESCOLARIDADE) VALUES ('?', '?')");
+            ps = conn.prepareStatement("INSERT INTO ALUNO(CPF, ESCOLARIDADE) VALUES (?, ?)");
             ps.setString(1, aluno.getCPF());
             ps.setString(2, aluno.getEscolaridade());
 
@@ -64,7 +63,7 @@ public class DaoAluno {
                     + "RG = ?, EMAIL = ? WHERE CPF = ?");
 
             ps.setString(1, aluno.getNome());
-            ps.setString(2, aluno.getDataNasc().replace("/", ""));
+            ps.setString(2, aluno.getDataNasc());
             ps.setString(3, aluno.getEndereco());
             ps.setInt(4, aluno.getNumero());
             ps.setString(5, aluno.getBairro());
@@ -99,14 +98,15 @@ public class DaoAluno {
 
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("SELECT * FROM PESSOA WHERE "
-                    + "CPF = ?");
+            ps = conn.prepareStatement("SELECT * FROM ALUNO a "
+                    + "INNER JOIN PESSOA p ON a.CPF = p.CPF"
+                    + " WHERE a.CPF = ?");
 
             ps.setString(1, cpf);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next() == true) {
-                aluno.setNome(rs.getString("NOME"));
+                aluno = new Aluno(rs.getString("NOME"), cpf);
                 aluno.setDataNasc(rs.getString("DATANASC"));
                 aluno.setEndereco(rs.getString("ENDERECO"));
                 aluno.setNumero(rs.getInt("NUMERO"));
@@ -120,19 +120,9 @@ public class DaoAluno {
                 aluno.setEstadoCivil(rs.getString("ESTADOCIVIL"));
                 aluno.setRG(rs.getString("RG"));
                 aluno.setEmail(rs.getString("EMAIL"));
-            }
-            
-             ps = conn.prepareStatement("SELECT * FROM ALUNO WHERE "
-                    + "CPF = ?");
-
-            ps.setString(1, cpf);
-            rs = ps.executeQuery();
-            
-            if (rs.next() == true) {
                 aluno.setEscolaridade(rs.getString("ESCOLARIDADE"));
             }
-            
-            
+
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
