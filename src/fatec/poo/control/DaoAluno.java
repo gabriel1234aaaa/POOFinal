@@ -132,6 +132,12 @@ public class DaoAluno {
     public void excluir(Aluno aluno) {
         PreparedStatement ps = null;
         try {
+            ps = conn.prepareStatement("DELETE FROM MATRICULA WHERE CPFALUNO = ?");
+            
+            ps.setString(1, aluno.getCPF());
+            
+            ps.execute();
+            
             ps = conn.prepareStatement("DELETE FROM ALUNO WHERE CPF = ?");
 
             ps.setString(1, aluno.getCPF());
