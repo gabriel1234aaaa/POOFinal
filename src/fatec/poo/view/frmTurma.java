@@ -5,8 +5,16 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoTurma;
+import fatec.poo.model.Turma;
+import java.awt.Component;
+import java.awt.HeadlessException;
 import java.text.ParseException;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
@@ -21,6 +29,43 @@ public class frmTurma extends javax.swing.JFrame {
      */
     public frmTurma() {
         initComponents();
+    }
+
+    private void limparCampos() {
+        for (Component component : getContentPane().getComponents()) {
+            if (!(component instanceof JLabel)) {
+                component.setEnabled(false);
+            }
+            if (component instanceof JTextField) {
+                ((JTextField) component).setText("");
+            } else if (component instanceof JFormattedTextField) {
+                ((JFormattedTextField) component).setValue("");
+            } else if (component instanceof JComboBox) {
+                ((JComboBox) component).setSelectedIndex(0);
+            }
+        }
+
+        btnConsultar.setEnabled(true);
+        btnSair.setEnabled(true);
+        cmbCurso.setEnabled(true);
+        cmbCurso.requestFocus();
+    }
+
+    private void alterarEstado(Component[] componentes, boolean estado) {
+        for (Component componente : componentes) {
+            componente.setEnabled(estado);
+        }
+    }
+
+    private Turma formToObject() {
+        Turma turma = new Turma(txtSiglaTurma.getText(), txtNome.getText());
+        turma.setQtdVagas(Integer.parseInt(txtQtdVagas.getText()));
+        turma.setPeriodo(cmbPeriodo.getSelectedItem().toString());
+        turma.setDatainicio(txtDataIni.getText().replaceAll("[^0-9]", ""));
+        turma.setDataTermino(txtDataTerm.getText().replaceAll("[^0-9]", ""));
+        //turma.setCurso(cmbCurso.getSelectedItem());
+
+        return turma;
     }
 
     /**
@@ -56,6 +101,11 @@ public class frmTurma extends javax.swing.JFrame {
         setTitle("Cadastrar Turma");
         setMinimumSize(new java.awt.Dimension(594, 228));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         lblCurso.setText("Curso");
 
@@ -70,8 +120,6 @@ public class frmTurma extends javax.swing.JFrame {
         lblPeriodo.setText("Período");
 
         lblDtInicio1.setText("Data término");
-
-        cmbCurso.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         txtSiglaTurma.setEnabled(false);
 
@@ -104,21 +152,46 @@ public class frmTurma extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
         btnInserir.setEnabled(false);
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -205,8 +278,87 @@ public class frmTurma extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtDataTermActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataTermActionPerformed
-        
+
     }//GEN-LAST:event_txtDataTermActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        // TODO add your handling code here:
+        Turma turma = daoTurma.consultar(txtSiglaTurma.getText());
+
+        alterarEstado(getContentPane().getComponents(), true);
+        cmbCurso.setEnabled(false);
+        txtSiglaTurma.setEnabled(false);
+        btnConsultar.setEnabled(false);
+
+        if (turma != null) {
+            btnInserir.setEnabled(false);
+            btnAlterar.setEnabled(true);
+            btnExcluir.setEnabled(true);
+            txtNome.setText(turma.getDescricao());
+            txtQtdVagas.setText(String.valueOf(turma.getQtdVagas()));
+            cmbPeriodo.getModel().setSelectedItem(turma.getPeriodo());
+            txtDataIni.setText(turma.getDatainicio());
+            txtDataTerm.setText(turma.getDataTermino());
+        } else {
+            btnInserir.setEnabled(true);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+        }
+
+        txtNome.requestFocus();
+
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        Conexao con = new Conexao("BD1711046", "BD1711046");
+        con.setDriver("oracle.jdbc.driver.OracleDriver");
+        con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoTurma = new DaoTurma(con.conectar());
+
+
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        // TODO add your handling code here:
+        try {
+            Turma turma = formToObject();
+            daoTurma.inserir(turma);
+            JOptionPane.showMessageDialog(this, "A Turma foi inserida com sucesso!", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } catch (HeadlessException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        // TODO add your handling code here:
+        try {
+            Turma turma = formToObject();
+            daoTurma.alterar(turma);
+            JOptionPane.showMessageDialog(this, "A Turma foi alterada com sucesso!", "Alteração", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } catch (HeadlessException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
+        try {
+            Turma turma = new Turma(txtSiglaTurma.getText(), txtNome.getText());
+            daoTurma.excluir(turma);
+            JOptionPane.showMessageDialog(this, "A Turma foi excluída com sucesso!", "Exclusão", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
 
     /**
      * @param args the command line arguments
@@ -264,4 +416,5 @@ public class frmTurma extends javax.swing.JFrame {
     private javax.swing.JTextField txtQtdVagas;
     private javax.swing.JTextField txtSiglaTurma;
     // End of variables declaration//GEN-END:variables
+    DaoTurma daoTurma;
 }
