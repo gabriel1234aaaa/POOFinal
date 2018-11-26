@@ -63,4 +63,34 @@ public class Turma {
         m.setTurma(this);
         mat_turma.add(m);
     }
+
+    public String getSiglaTurma() {
+        return SiglaTurma;
+    }
+
+    public String getDescricao() {
+        return Descricao;
+    }
+
+    public String getDatainicio() {
+        return Datainicio;
+    }
+
+    public String getDataTermino() {
+        return DataTermino;
+    }
+
+    public String getPeriodo() {
+        return Periodo;
+    }
+
+    public int getQtdVagas() {
+        return QtdVagas;
+    }
+
+    public String getObservacoes() {
+        return Observacoes;
+    }
+    
+    
 }
