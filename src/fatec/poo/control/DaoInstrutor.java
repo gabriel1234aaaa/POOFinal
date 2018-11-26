@@ -18,6 +18,7 @@ import java.sql.SQLException;
 public class DaoInstrutor {
 
     private Connection conn;
+    private DaoPessoa daoPessoa;
 
     public DaoInstrutor(Connection conn) {
         this.conn = conn;
@@ -27,29 +28,7 @@ public class DaoInstrutor {
         PreparedStatement ps = null;
 
         try {
-            ps = conn.prepareStatement("INSERT INTO PESSOA(CPF, NOME, DATANASC, "
-                    + "ENDERECO, NUMERO, BAIRRO, CIDADE, ESTADO, CEP, TELEFONE, "
-                    + "CELULAR, SEXO, ESTADOCIVIL, RG, EMAIL) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, "
-                    + "?, ?, ?, ?, ?, ?, ?)");
-
-            ps.setString(1, instrutor.getCPF());
-            ps.setString(2, instrutor.getNome());
-            ps.setString(3, instrutor.getDataNasc());
-            ps.setString(4, instrutor.getEndereco());
-            ps.setInt(5, instrutor.getNumero());
-            ps.setString(6, instrutor.getBairro());
-            ps.setString(7, instrutor.getCidade());
-            ps.setString(8, instrutor.getEstado());
-            ps.setString(9, instrutor.getCEP());
-            ps.setString(10, instrutor.getTelefone());
-            ps.setString(11, instrutor.getCelular());
-            ps.setString(12, instrutor.getSexo());
-            ps.setString(13, instrutor.getEstadoCivil());
-            ps.setString(14, instrutor.getRG());
-            ps.setString(15, instrutor.getEmail());
-
-            ps.execute();
+            daoPessoa.inserir(instrutor);
 
             ps = conn.prepareStatement("INSERT INTO INSTRUTOR(CPF, FORMACAO, AREAATUACAO) VALUES (?, ?, ?)");
             ps.setString(1, instrutor.getCPF());
@@ -66,29 +45,7 @@ public class DaoInstrutor {
     public void alterar(Instrutor instrutor) {
         PreparedStatement ps = null;
         try {
-
-            ps = conn.prepareStatement("UPDATE PESSOA SET NOME = ?, DATANASC = ?, "
-                    + "ENDERECO = ?, NUMERO = ?, BAIRRO = ?, CIDADE = ?, ESTADO = ?, "
-                    + "CEP = ?, TELEFONE = ?, CELULAR = ?, SEXO = ?, ESTADOCIVIL = ?, "
-                    + "RG = ?, EMAIL = ? WHERE CPF = ?");
-
-            ps.setString(1, instrutor.getNome());
-            ps.setString(2, instrutor.getDataNasc());
-            ps.setString(3, instrutor.getEndereco());
-            ps.setInt(4, instrutor.getNumero());
-            ps.setString(5, instrutor.getBairro());
-            ps.setString(6, instrutor.getCidade());
-            ps.setString(7, instrutor.getEstado());
-            ps.setString(8, instrutor.getCEP());
-            ps.setString(9, instrutor.getTelefone());
-            ps.setString(10, instrutor.getCelular());
-            ps.setString(11, instrutor.getSexo());
-            ps.setString(12, instrutor.getEstadoCivil());
-            ps.setString(13, instrutor.getRG());
-            ps.setString(14, instrutor.getEmail());
-            ps.setString(15, instrutor.getCPF());
-
-            ps.execute();
+            daoPessoa.alterar(instrutor);
 
             ps = conn.prepareStatement("UPDATE INSTRUTOR SET FORMACAO = ?, "
                     + "AREAATUACAO = ? WHERE CPF = ?");
@@ -143,14 +100,7 @@ public class DaoInstrutor {
     public void excluir(Instrutor instrutor) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM MATRICULA WHERE SIGLATURMA IN ("
-                    + "SELECT SIGLATURMA FROM TURMA WHERE CPFINST = ?)");
-
-            ps.setString(1, instrutor.getCPF());
-
-            ps.execute();
-            
-            ps = conn.prepareStatement("DELETE FROM TURMA WHERE CPFINST = ?");
+            ps = conn.prepareStatement("UPDATE TURMA SET CPFINST = null WHERE CPFINST = ?");
 
             ps.setString(1, instrutor.getCPF());
 
@@ -162,11 +112,7 @@ public class DaoInstrutor {
 
             ps.execute();
 
-            ps = conn.prepareStatement("DELETE FROM PESSOA WHERE CPF = ?");
-
-            ps.setString(1, instrutor.getCPF());
-
-            ps.execute();
+            daoPessoa.excluir(instrutor);
 
         } catch (SQLException ex) {
             System.out.println(ex.toString());

@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatec.poo.control;
 
+import fatec.poo.model.Curso;
+import fatec.poo.model.Instrutor;
 import fatec.poo.model.Turma;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -85,15 +82,18 @@ public class DaoTurma {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next() == true) {
+                DaoCurso daoCurso = new DaoCurso(conn);
+                DaoInstrutor daoInstrutor = new DaoInstrutor(conn);
+                Curso curso = daoCurso.consultar(rs.getString("SIGLACURSO"));
+                Instrutor instrutor = daoInstrutor.consultar(rs.getString("CPFINST"));
                 turma = new Turma(sigla, rs.getString("DESCRICAO)"));
-                turma.setCurso(rs.getString("SIGLACURSO"));
-                turma.setInst( rs.getString("CPFINST"));
+                turma.setCurso(curso);
+                turma.setInstrutor(instrutor);
                 turma.setDatainicio(rs.getString("DATAINICIO"));
                 turma.setDataTermino(rs.getString("DATATERMINO"));
                 turma.setPeriodo(rs.getString("PERIODO"));
                 turma.setQtdVagas(rs.getInt("QTDEVAGAS"));
                 turma.setObservacoes(rs.getString("OBSERVACOES"));
-
             }
 
         } catch (SQLException ex) {
@@ -105,8 +105,7 @@ public class DaoTurma {
     public void excluir(Turma turma) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM MATRICULA WHERE SIGLATURMA IN ("
-                    + "SELECT SIGLATURMA FROM TURMA WHERE SIGLATURMA= ?)");
+            ps = conn.prepareStatement("DELETE FROM MATRICULA WHERE SIGLATURMA = ?");
 
             ps.setString(1, turma.getSiglaTurma());
 

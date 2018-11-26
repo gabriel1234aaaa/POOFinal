@@ -5,6 +5,16 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoCurso;
+import fatec.poo.model.Curso;
+import java.awt.Component;
+import java.awt.HeadlessException;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 /**
  *
  * @author 0030481711016
@@ -16,6 +26,36 @@ public class frmCurso extends javax.swing.JFrame {
      */
     public frmCurso() {
         initComponents();
+    }
+    
+    private void limparCampos() {
+        for (Component component : getContentPane().getComponents()) {
+            component.setEnabled(false);
+            if (component instanceof JTextField) {
+                ((JTextField) component).setText("");
+            } else if (component instanceof JFormattedTextField) {
+                ((JFormattedTextField) component).setValue("");
+            } else if (component instanceof JComboBox) {
+                ((JComboBox) component).setSelectedIndex(0);
+            }
+        }
+    }
+
+    private void alterarEstado(Component[] componentes, boolean estado) {
+        for (Component componente : componentes) {
+            componente.setEnabled(estado);
+        }
+    }
+    
+    private Curso formToObject(){
+        Curso curso = new Curso(txtSiglaCurso.getText(), txtNomeCurso.getText());
+        curso.setCargaHoraria(Integer.valueOf(txtCargaHor.getText()));
+        curso.setDataVigencia(txtDataVig.getText().replaceAll("[^0-9]", ""));
+        curso.setValor(Double.valueOf(txtValCurso.getText()));
+        curso.setValorHoraInstrutor(Double.valueOf(txtValHorInst.getText()));
+        curso.setPrograma(txtProgCurso.getText());
+        
+        return curso;
     }
 
     /**
@@ -40,7 +80,7 @@ public class frmCurso extends javax.swing.JFrame {
         lblDataVigencia = new javax.swing.JLabel();
         txtDataVig = new javax.swing.JFormattedTextField();
         lblDataVigencia1 = new javax.swing.JLabel();
-        txtDataVig1 = new javax.swing.JFormattedTextField();
+        txtValHorInst = new javax.swing.JFormattedTextField();
         btnConsultar = new javax.swing.JButton();
         btnInserir = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
@@ -54,6 +94,11 @@ public class frmCurso extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(586, 230));
         setResizable(false);
         setSize(new java.awt.Dimension(586, 230));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblSiglaCurso.setText("Sigla curso");
@@ -98,21 +143,26 @@ public class frmCurso extends javax.swing.JFrame {
         lblDataVigencia1.setText("Valor hora instrutor");
         getContentPane().add(lblDataVigencia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(325, 109, -1, -1));
 
-        txtDataVig1.setEnabled(false);
-        txtDataVig1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDataVig1ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(txtDataVig1, new org.netbeans.lib.awtextra.AbsoluteConstraints(428, 106, 123, -1));
+        txtValHorInst.setEnabled(false);
+        getContentPane().add(txtValHorInst, new org.netbeans.lib.awtextra.AbsoluteConstraints(428, 106, 123, -1));
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 180, -1, -1));
 
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
         btnInserir.setEnabled(false);
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnInserir, new org.netbeans.lib.awtextra.AbsoluteConstraints(142, 180, 99, -1));
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
@@ -127,14 +177,64 @@ public class frmCurso extends javax.swing.JFrame {
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(457, 180, 99, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtDataVig1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDataVig1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDataVig1ActionPerformed
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        Conexao con = new Conexao("BD1711046", "BD1711046");
+        con.setDriver("oracle.jdbc.driver.OracleDriver");
+        con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoCurso = new DaoCurso(con.conectar());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        if (txtSiglaCurso.getText().trim().length() > 0) {
+            Curso curso = daoCurso.consultar(txtSiglaCurso.getText());
+            
+            alterarEstado(getContentPane().getComponents(), true);
+            txtSiglaCurso.setEnabled(false);
+            btnConsultar.setEnabled(false);
+            
+            if(curso != null){
+                btnInserir.setEnabled(false);
+                txtNomeCurso.setText(curso.getNome());
+                txtCargaHor.setText(String.valueOf(curso.getCargaHoraria()));
+                txtDataVig.setText(curso.getDataVigencia());
+                txtValCurso.setText(String.valueOf(curso.getValor()));
+                txtValHorInst.setText(String.valueOf(curso.getValorHoraInstrutor()));
+                txtProgCurso.setText(curso.getPrograma());
+            }else{
+                btnAlterar.setEnabled(false);
+                btnExcluir.setEnabled(false);
+            }
+            
+            txtNomeCurso.requestFocus();
+        }else{
+            JOptionPane.showMessageDialog(this, "Informe uma sigla de curso!", "Sigla do Curso", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        try {
+            Curso curso = formToObject();
+            daoCurso.inserir(curso);
+            JOptionPane.showMessageDialog(this, "O Curso foi inserido com sucesso!", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnInserirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,10 +287,11 @@ public class frmCurso extends javax.swing.JFrame {
     private javax.swing.JLabel lblValorCurso;
     private javax.swing.JTextField txtCargaHor;
     private javax.swing.JFormattedTextField txtDataVig;
-    private javax.swing.JFormattedTextField txtDataVig1;
     private javax.swing.JTextField txtNomeCurso;
     private javax.swing.JTextField txtProgCurso;
     private javax.swing.JTextField txtSiglaCurso;
     private javax.swing.JTextField txtValCurso;
+    private javax.swing.JFormattedTextField txtValHorInst;
     // End of variables declaration//GEN-END:variables
+    DaoCurso daoCurso;
 }

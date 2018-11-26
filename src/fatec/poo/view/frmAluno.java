@@ -28,7 +28,7 @@ public class frmAluno extends javax.swing.JFrame {
         initComponents();
     }
 
-    public void limparCampos() {
+    private void limparCampos() {
         for (Component component : getContentPane().getComponents()) {
             component.setEnabled(false);
             if (component instanceof JTextField) {
@@ -46,13 +46,13 @@ public class frmAluno extends javax.swing.JFrame {
         txtCPF.requestFocus();
     }
 
-    public void alterarEstado(Component[] componentes, boolean estado) {
+    private void alterarEstado(Component[] componentes, boolean estado) {
         for (Component componente : componentes) {
             componente.setEnabled(estado);
         }
     }
 
-    public Aluno formToObject() {
+    private Aluno formToObject() {
         String cpf = txtCPF.getText().replaceAll("[^0-9]", "");
         Aluno aluno = new Aluno(txtNome.getText(), cpf);
         aluno.setDataNasc(txtDataNascto.getText().replaceAll("[^0-9]", ""));
@@ -449,9 +449,9 @@ public class frmAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        Conexao con = new Conexao("gabriel", "1");
+        Conexao con = new Conexao("BD1711046", "BD1711046");
         con.setDriver("oracle.jdbc.driver.OracleDriver");
-        con.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoAln = new DaoAluno(con.conectar());
     }//GEN-LAST:event_formWindowOpened
 
