@@ -12,6 +12,7 @@ import java.awt.Component;
 import java.awt.HeadlessException;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -30,7 +31,9 @@ public class frmAluno extends javax.swing.JFrame {
 
     private void limparCampos() {
         for (Component component : getContentPane().getComponents()) {
-            component.setEnabled(false);
+            if (!(component instanceof JLabel)) {
+                component.setEnabled(false);
+            }
             if (component instanceof JTextField) {
                 ((JTextField) component).setText("");
             } else if (component instanceof JFormattedTextField) {

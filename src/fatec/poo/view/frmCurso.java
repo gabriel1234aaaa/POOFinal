@@ -12,6 +12,7 @@ import java.awt.Component;
 import java.awt.HeadlessException;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -30,7 +31,9 @@ public class frmCurso extends javax.swing.JFrame {
     
     private void limparCampos() {
         for (Component component : getContentPane().getComponents()) {
-            component.setEnabled(false);
+            if (!(component instanceof JLabel)) {
+                component.setEnabled(false);
+            }
             if (component instanceof JTextField) {
                 ((JTextField) component).setText("");
             } else if (component instanceof JFormattedTextField) {
@@ -39,6 +42,10 @@ public class frmCurso extends javax.swing.JFrame {
                 ((JComboBox) component).setSelectedIndex(0);
             }
         }
+        
+        txtSiglaCurso.setEnabled(true);
+        btnConsultar.setEnabled(true);
+        btnSair.setEnabled(true);
     }
 
     private void alterarEstado(Component[] componentes, boolean estado) {
@@ -52,7 +59,7 @@ public class frmCurso extends javax.swing.JFrame {
         curso.setCargaHoraria(Integer.valueOf(txtCargaHor.getText()));
         curso.setDataVigencia(txtDataVig.getText().replaceAll("[^0-9]", ""));
         curso.setValor(Double.valueOf(txtValCurso.getText()));
-        curso.setValorHoraInstrutor(Double.valueOf(txtValHorInst.getText()));
+        curso.setValorHoraInstrutor(Double.valueOf(txtValCurso.getText()));
         curso.setPrograma(txtProgCurso.getText());
         
         return curso;
@@ -75,17 +82,17 @@ public class frmCurso extends javax.swing.JFrame {
         txtSiglaCurso = new javax.swing.JTextField();
         txtNomeCurso = new javax.swing.JTextField();
         txtCargaHor = new javax.swing.JTextField();
-        txtValCurso = new javax.swing.JTextField();
         txtProgCurso = new javax.swing.JTextField();
         lblDataVigencia = new javax.swing.JLabel();
         txtDataVig = new javax.swing.JFormattedTextField();
         lblDataVigencia1 = new javax.swing.JLabel();
-        txtValHorInst = new javax.swing.JFormattedTextField();
+        txtValCurso = new javax.swing.JFormattedTextField();
         btnConsultar = new javax.swing.JButton();
         btnInserir = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
+        txtValHorInst1 = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Curso");
@@ -99,52 +106,36 @@ public class frmCurso extends javax.swing.JFrame {
                 formWindowOpened(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblSiglaCurso.setText("Sigla curso");
-        getContentPane().add(lblSiglaCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(76, 31, -1, -1));
 
         lblNomeCurso.setText("Nome curso");
-        getContentPane().add(lblNomeCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(71, 57, -1, -1));
 
         lblCargaHor.setText("Carga horária");
-        getContentPane().add(lblCargaHor, new org.netbeans.lib.awtextra.AbsoluteConstraints(61, 83, -1, -1));
 
         lblValorCurso.setText("Valor curso");
-        getContentPane().add(lblValorCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(74, 109, -1, -1));
 
         lblProgCurso.setText("Programa do curso");
-        getContentPane().add(lblProgCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 135, -1, -1));
-        getContentPane().add(txtSiglaCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 28, 71, -1));
 
         txtNomeCurso.setEnabled(false);
-        getContentPane().add(txtNomeCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 54, 140, -1));
 
         txtCargaHor.setEnabled(false);
-        getContentPane().add(txtCargaHor, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 80, 140, -1));
-
-        txtValCurso.setEnabled(false);
-        getContentPane().add(txtValCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 106, 70, -1));
 
         txtProgCurso.setEnabled(false);
-        getContentPane().add(txtProgCurso, new org.netbeans.lib.awtextra.AbsoluteConstraints(131, 132, 140, -1));
 
         lblDataVigencia.setText("Data de vigência");
-        getContentPane().add(lblDataVigencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(338, 83, -1, -1));
 
         try {
-            txtDataVig.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/###")));
+            txtDataVig.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
         txtDataVig.setEnabled(false);
-        getContentPane().add(txtDataVig, new org.netbeans.lib.awtextra.AbsoluteConstraints(428, 80, 123, -1));
 
         lblDataVigencia1.setText("Valor hora instrutor");
-        getContentPane().add(lblDataVigencia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(325, 109, -1, -1));
 
-        txtValHorInst.setEnabled(false);
-        getContentPane().add(txtValHorInst, new org.netbeans.lib.awtextra.AbsoluteConstraints(428, 106, 123, -1));
+        txtValCurso.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        txtValCurso.setEnabled(false);
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
@@ -153,7 +144,6 @@ public class frmCurso extends javax.swing.JFrame {
                 btnConsultarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 180, -1, -1));
 
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
@@ -163,17 +153,24 @@ public class frmCurso extends javax.swing.JFrame {
                 btnInserirActionPerformed(evt);
             }
         });
-        getContentPane().add(btnInserir, new org.netbeans.lib.awtextra.AbsoluteConstraints(142, 180, 99, -1));
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
-        getContentPane().add(btnAlterar, new org.netbeans.lib.awtextra.AbsoluteConstraints(247, 180, 99, -1));
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
-        getContentPane().add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(352, 180, 99, -1));
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -182,7 +179,111 @@ public class frmCurso extends javax.swing.JFrame {
                 btnSairActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSair, new org.netbeans.lib.awtextra.AbsoluteConstraints(457, 180, 99, -1));
+
+        txtValHorInst1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        txtValHorInst1.setEnabled(false);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(lblSiglaCurso)
+                        .addGap(4, 4, 4)
+                        .addComponent(txtSiglaCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addComponent(lblNomeCurso)
+                        .addGap(4, 4, 4)
+                        .addComponent(txtNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(lblProgCurso)
+                        .addGap(4, 4, 4)
+                        .addComponent(txtProgCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(btnConsultar)
+                        .addGap(6, 6, 6)
+                        .addComponent(btnInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblValorCurso)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtValCurso, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(71, 71, 71)
+                                .addComponent(lblDataVigencia1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblCargaHor)
+                                .addGap(4, 4, 4)
+                                .addComponent(txtCargaHor, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(67, 67, 67)
+                                .addComponent(lblDataVigencia)))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDataVig, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtValHorInst1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(16, 16, 16))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(lblSiglaCurso))
+                    .addComponent(txtSiglaCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(lblNomeCurso))
+                    .addComponent(txtNomeCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCargaHor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDataVig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblCargaHor)
+                            .addComponent(lblDataVigencia))))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblValorCurso)
+                            .addComponent(txtValCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtValHorInst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblDataVigencia1)))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(lblProgCurso))
+                    .addComponent(txtProgCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnConsultar)
+                    .addComponent(btnInserir)
+                    .addComponent(btnAlterar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnSair)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -208,7 +309,7 @@ public class frmCurso extends javax.swing.JFrame {
                 txtCargaHor.setText(String.valueOf(curso.getCargaHoraria()));
                 txtDataVig.setText(curso.getDataVigencia());
                 txtValCurso.setText(String.valueOf(curso.getValor()));
-                txtValHorInst.setText(String.valueOf(curso.getValorHoraInstrutor()));
+                txtValCurso.setText(String.valueOf(curso.getValorHoraInstrutor()));
                 txtProgCurso.setText(curso.getPrograma());
             }else{
                 btnAlterar.setEnabled(false);
@@ -235,6 +336,28 @@ public class frmCurso extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        try {
+            Curso curso = formToObject();
+            daoCurso.alterar(curso);
+            JOptionPane.showMessageDialog(this, "O Curso foi alterado com sucesso!", "Alteração", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        try {
+            Curso curso = new Curso(txtSiglaCurso.getText(), txtNomeCurso.getText());
+            daoCurso.excluir(curso);
+            JOptionPane.showMessageDialog(this, "O Curso foi excluído com sucesso!", "Exclusão", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -290,8 +413,8 @@ public class frmCurso extends javax.swing.JFrame {
     private javax.swing.JTextField txtNomeCurso;
     private javax.swing.JTextField txtProgCurso;
     private javax.swing.JTextField txtSiglaCurso;
-    private javax.swing.JTextField txtValCurso;
-    private javax.swing.JFormattedTextField txtValHorInst;
+    private javax.swing.JFormattedTextField txtValCurso;
+    private javax.swing.JFormattedTextField txtValHorInst1;
     // End of variables declaration//GEN-END:variables
     DaoCurso daoCurso;
 }
