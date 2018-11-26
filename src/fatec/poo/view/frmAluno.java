@@ -482,11 +482,8 @@ public class frmAluno extends javax.swing.JFrame {
         try {
             String cpf = txtCPF.getText().replaceAll("[^0-9]", "");
             Aluno aluno = new Aluno(txtNome.getText(), cpf);
-
             daoAln.excluir(aluno);
-
             JOptionPane.showMessageDialog(this, "O Aluno foi excluído com sucesso!", "Exclusão", JOptionPane.INFORMATION_MESSAGE);
-
             limparCampos();
         } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
