@@ -23,5 +23,15 @@ public class Instrutor extends Pessoa {
     public void setAreaAtuacao(String AreaAtuacao) {
         this.AreaAtuacao = AreaAtuacao;
     }
+
+    public String getFormacao() {
+        return Formacao;
+    }
+
+    public String getAreaAtuacao() {
+        return AreaAtuacao;
+    }
+    
+    
     
 }
