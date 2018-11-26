@@ -43,4 +43,34 @@ public class Curso {
         curso_turma.add(t);
     }
 
+    public String getSigla() {
+        return Sigla;
+    }
+
+    public String getNome() {
+        return Nome;
+    }
+
+    public int getCargaHoraria() {
+        return CargaHoraria;
+    }
+
+    public double getValor() {
+        return Valor;
+    }
+
+    public String getDataVigencia() {
+        return dataVigencia;
+    }
+
+    public double getValorHoraInstrutor() {
+        return ValorHoraInstrutor;
+    }
+
+    public String getPrograma() {
+        return Programa;
+    }
+
+    
+    
 }
