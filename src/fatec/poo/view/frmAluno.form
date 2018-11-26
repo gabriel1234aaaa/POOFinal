@@ -86,7 +86,7 @@
                           <Component id="cmbEscolaridade" alignment="0" max="32767" attributes="0"/>
                           <Component id="txtDataNascto" alignment="0" max="32767" attributes="0"/>
                           <Component id="txtTelRes" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtCelular" alignment="0" pref="138" max="32767" attributes="0"/>
+                          <Component id="txtCelular" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>

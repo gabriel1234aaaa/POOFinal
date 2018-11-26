@@ -8,8 +8,12 @@ package fatec.poo.view;
 import fatec.poo.control.Conexao;
 import fatec.poo.control.DaoAluno;
 import fatec.poo.model.Aluno;
+import java.awt.Component;
 import java.awt.HeadlessException;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -25,41 +29,20 @@ public class frmAluno extends javax.swing.JFrame {
     }
 
     public void limparCampos() {
-        txtCPF.setValue("");
-        txtNome.setText("");
-        txtNome.setEnabled(false);
-        txtDataNascto.setValue("");
-        txtDataNascto.setEnabled(false);
-        cmbSexo.setSelectedIndex(0);
-        cmbSexo.setEnabled(false);
-        cmbEstadoCivil.setSelectedIndex(0);
-        cmbEstadoCivil.setEnabled(false);
-        cmbEscolaridade.setSelectedIndex(0);
-        cmbEscolaridade.setEnabled(false);
-        txtEndereco.setText("");
-        txtEndereco.setEnabled(false);
-        txtN.setText("");
-        txtN.setEnabled(false);
-        txtBairro.setText("");
-        txtBairro.setEnabled(false);
-        txtCEP.setValue("");
-        txtCEP.setEnabled(false);
-        txtCidade.setText("");
-        txtCidade.setEnabled(false);
-        cmbEstado.setSelectedIndex(0);
-        cmbEstado.setEnabled(false);
-        txtTelRes.setValue("");
-        txtTelRes.setEnabled(false);
-        txtRG.setValue("");
-        txtRG.setEnabled(false);
-        txtCelular.setValue("");
-        txtCelular.setEnabled(false);
-        txtEmail.setText("");
-        txtEmail.setEnabled(false);
-        txtCPF.setEnabled(true);
+        for (Component component : getContentPane().getComponents()) {
+            component.setEnabled(false);
+            if (component instanceof JTextField) {
+                ((JTextField) component).setText("");
+            }else if(component instanceof JFormattedTextField){
+                ((JFormattedTextField) component).setValue("");
+            }else if(component instanceof JComboBox){
+                ((JComboBox) component).setSelectedIndex(0);
+            }
+        }
+        
         btnConsultar.setEnabled(true);
-        btnInserir.setEnabled(false);
         btnSair.setEnabled(true);
+        txtCPF.setEnabled(true);
         txtCPF.requestFocus();
     }
 
