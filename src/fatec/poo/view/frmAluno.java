@@ -33,17 +33,44 @@ public class frmAluno extends javax.swing.JFrame {
             component.setEnabled(false);
             if (component instanceof JTextField) {
                 ((JTextField) component).setText("");
-            }else if(component instanceof JFormattedTextField){
+            } else if (component instanceof JFormattedTextField) {
                 ((JFormattedTextField) component).setValue("");
-            }else if(component instanceof JComboBox){
+            } else if (component instanceof JComboBox) {
                 ((JComboBox) component).setSelectedIndex(0);
             }
         }
-        
+
         btnConsultar.setEnabled(true);
         btnSair.setEnabled(true);
         txtCPF.setEnabled(true);
         txtCPF.requestFocus();
+    }
+
+    public void alterarEstado(Component[] componentes, boolean estado) {
+        for (Component componente : componentes) {
+            componente.setEnabled(estado);
+        }
+    }
+
+    public Aluno formToObject() {
+        String cpf = txtCPF.getText().replaceAll("[^0-9]", "");
+        Aluno aluno = new Aluno(txtNome.getText(), cpf);
+        aluno.setDataNasc(txtDataNascto.getText().replaceAll("[^0-9]", ""));
+        aluno.setSexo(cmbSexo.getSelectedItem().equals("Feminino") ? "F" : "M");
+        aluno.setEstadoCivil(cmbEstadoCivil.getSelectedItem().toString().replace("(a)", ""));
+        aluno.setEscolaridade(cmbEscolaridade.getSelectedItem().toString());
+        aluno.setEndereco(txtEndereco.getText());
+        aluno.setNumero(Integer.parseInt(txtN.getText()));
+        aluno.setBairro(txtBairro.getText());
+        aluno.setCEP(txtCEP.getText().replaceAll("[^0-9]", ""));
+        aluno.setCidade(txtCidade.getText());
+        aluno.setEstado(cmbEstado.getSelectedItem().toString());
+        aluno.setTelefone(txtTelRes.getText().replaceAll("[^0-9]", ""));
+        aluno.setRG(txtRG.getText().replaceAll("[^0-9]", ""));
+        aluno.setCelular(txtCelular.getText().replaceAll("[^0-9]", ""));
+        aluno.setEmail(txtEmail.getText());
+
+        return aluno;
     }
 
     /**
@@ -385,22 +412,8 @@ public class frmAluno extends javax.swing.JFrame {
         if (Aluno.validarCPF(cpf)) {
             Aluno aluno = daoAln.consultar(cpf);
 
+            alterarEstado(getContentPane().getComponents(), true);
             txtCPF.setEnabled(false);
-            txtNome.setEnabled(true);
-            txtDataNascto.setEnabled(true);
-            cmbSexo.setEnabled(true);
-            cmbEstadoCivil.setEnabled(true);
-            cmbEscolaridade.setEnabled(true);
-            txtEndereco.setEnabled(true);
-            txtN.setEnabled(true);
-            txtBairro.setEnabled(true);
-            txtCEP.setEnabled(true);
-            txtCidade.setEnabled(true);
-            cmbEstado.setEnabled(true);
-            txtTelRes.setEnabled(true);
-            txtRG.setEnabled(true);
-            txtCelular.setEnabled(true);
-            txtEmail.setEnabled(true);
             btnConsultar.setEnabled(false);
 
             if (aluno != null) {
@@ -444,27 +457,9 @@ public class frmAluno extends javax.swing.JFrame {
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
         try {
-            String cpf = txtCPF.getText().replaceAll("[^0-9]", "");
-            Aluno aluno = new Aluno(txtNome.getText(), cpf);
-            aluno.setDataNasc(txtDataNascto.getText().replaceAll("[^0-9]", ""));
-            aluno.setSexo(cmbSexo.getSelectedItem().equals("Feminino") ? "F" : "M");
-            aluno.setEstadoCivil(cmbEstadoCivil.getSelectedItem().toString().replace("(a)", ""));
-            aluno.setEscolaridade(cmbEscolaridade.getSelectedItem().toString());
-            aluno.setEndereco(txtEndereco.getText());
-            aluno.setNumero(Integer.parseInt(txtN.getText()));
-            aluno.setBairro(txtBairro.getText());
-            aluno.setCEP(txtCEP.getText().replaceAll("[^0-9]", ""));
-            aluno.setCidade(txtCidade.getText());
-            aluno.setEstado(cmbEstado.getSelectedItem().toString());
-            aluno.setTelefone(txtTelRes.getText().replaceAll("[^0-9]", ""));
-            aluno.setRG(txtRG.getText().replaceAll("[^0-9]", ""));
-            aluno.setCelular(txtCelular.getText().replaceAll("[^0-9]", ""));
-            aluno.setEmail(txtEmail.getText());
-
+            Aluno aluno = formToObject();
             daoAln.inserir(aluno);
-
             JOptionPane.showMessageDialog(this, "O Aluno foi inserido com sucesso!", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
-
             limparCampos();
         } catch (HeadlessException | NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
@@ -473,27 +468,9 @@ public class frmAluno extends javax.swing.JFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         try {
-            String cpf = txtCPF.getText().replaceAll("[^0-9]", "");
-            Aluno aluno = new Aluno(txtNome.getText(), cpf);
-            aluno.setDataNasc(txtDataNascto.getText().replaceAll("[^0-9]", ""));
-            aluno.setSexo(cmbSexo.getSelectedItem().equals("Feminino") ? "F" : "M");
-            aluno.setEstadoCivil(cmbEstadoCivil.getSelectedItem().toString().replace("(a)", ""));
-            aluno.setEscolaridade(cmbEscolaridade.getSelectedItem().toString());
-            aluno.setEndereco(txtEndereco.getText());
-            aluno.setNumero(Integer.parseInt(txtN.getText()));
-            aluno.setBairro(txtBairro.getText());
-            aluno.setCEP(txtCEP.getText().replaceAll("[^0-9]", ""));
-            aluno.setCidade(txtCidade.getText());
-            aluno.setEstado(cmbEstado.getSelectedItem().toString());
-            aluno.setTelefone(txtTelRes.getText().replaceAll("[^0-9]", ""));
-            aluno.setRG(txtRG.getText().replaceAll("[^0-9]", ""));
-            aluno.setCelular(txtCelular.getText().replaceAll("[^0-9]", ""));
-            aluno.setEmail(txtEmail.getText());
-
+            Aluno aluno = formToObject();
             daoAln.alterar(aluno);
-
             JOptionPane.showMessageDialog(this, "O Aluno foi alterado com sucesso!", "Alteração", JOptionPane.INFORMATION_MESSAGE);
-
             limparCampos();
         } catch (HeadlessException | NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
@@ -505,11 +482,8 @@ public class frmAluno extends javax.swing.JFrame {
         try {
             String cpf = txtCPF.getText().replaceAll("[^0-9]", "");
             Aluno aluno = new Aluno(txtNome.getText(), cpf);
-
             daoAln.excluir(aluno);
-
             JOptionPane.showMessageDialog(this, "O Aluno foi excluído com sucesso!", "Exclusão", JOptionPane.INFORMATION_MESSAGE);
-
             limparCampos();
         } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
