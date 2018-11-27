@@ -10,6 +10,9 @@ import fatec.poo.control.DaoCurso;
 import fatec.poo.model.Curso;
 import java.awt.Component;
 import java.awt.HeadlessException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -58,8 +61,8 @@ public class frmCurso extends javax.swing.JFrame {
         Curso curso = new Curso(txtSiglaCurso.getText(), txtNomeCurso.getText());
         curso.setCargaHoraria(Integer.valueOf(txtCargaHor.getText()));
         curso.setDataVigencia(txtDataVig.getText().replaceAll("[^0-9]", ""));
-        curso.setValor(Double.valueOf(txtValCurso.getText()));
-        curso.setValorHoraInstrutor(Double.valueOf(txtValCurso.getText()));
+        curso.setValor(Double.valueOf(txtValCurso.getText().replace(".", "").replace(",", ".")));
+        curso.setValorHoraInstrutor(Double.valueOf(txtValHorInst.getText().replace(".", "").replace(",", ".")));
         curso.setPrograma(txtProgCurso.getText());
         
         return curso;
@@ -92,7 +95,7 @@ public class frmCurso extends javax.swing.JFrame {
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
-        txtValHorInst1 = new javax.swing.JFormattedTextField();
+        txtValHorInst = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Curso");
@@ -134,7 +137,7 @@ public class frmCurso extends javax.swing.JFrame {
 
         lblDataVigencia1.setText("Valor hora instrutor");
 
-        txtValCurso.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
+        txtValCurso.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
         txtValCurso.setEnabled(false);
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
@@ -180,8 +183,8 @@ public class frmCurso extends javax.swing.JFrame {
             }
         });
 
-        txtValHorInst1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter()));
-        txtValHorInst1.setEnabled(false);
+        txtValHorInst.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        txtValHorInst.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -233,7 +236,7 @@ public class frmCurso extends javax.swing.JFrame {
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtDataVig, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtValHorInst1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtValHorInst, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
@@ -268,7 +271,7 @@ public class frmCurso extends javax.swing.JFrame {
                             .addComponent(lblValorCurso)
                             .addComponent(txtValCurso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtValHorInst1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtValHorInst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblDataVigencia1)))
                 .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,8 +311,8 @@ public class frmCurso extends javax.swing.JFrame {
                 txtNomeCurso.setText(curso.getNome());
                 txtCargaHor.setText(String.valueOf(curso.getCargaHoraria()));
                 txtDataVig.setText(curso.getDataVigencia());
-                txtValCurso.setText(String.valueOf(curso.getValor()));
-                txtValCurso.setText(String.valueOf(curso.getValorHoraInstrutor()));
+                txtValCurso.setValue(curso.getValor());
+                txtValHorInst.setValue(curso.getValorHoraInstrutor());
                 txtProgCurso.setText(curso.getPrograma());
             }else{
                 btnAlterar.setEnabled(false);
@@ -414,7 +417,7 @@ public class frmCurso extends javax.swing.JFrame {
     private javax.swing.JTextField txtProgCurso;
     private javax.swing.JTextField txtSiglaCurso;
     private javax.swing.JFormattedTextField txtValCurso;
-    private javax.swing.JFormattedTextField txtValHorInst1;
+    private javax.swing.JFormattedTextField txtValHorInst;
     // End of variables declaration//GEN-END:variables
     DaoCurso daoCurso;
 }

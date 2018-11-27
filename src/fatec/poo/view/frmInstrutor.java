@@ -114,18 +114,18 @@ public class frmInstrutor extends javax.swing.JFrame {
         lblEstadoCivil = new javax.swing.JLabel();
         cmbEstadoCivil = new javax.swing.JComboBox<>();
         lblN = new javax.swing.JLabel();
-        txtN = new javax.swing.JTextField();
         lblCEP = new javax.swing.JLabel();
-        txtCEP = new javax.swing.JTextField();
         lblTelRes = new javax.swing.JLabel();
-        txtTelRes = new javax.swing.JTextField();
         lblCelular = new javax.swing.JLabel();
-        txtCelular = new javax.swing.JTextField();
         btnConsultar = new javax.swing.JButton();
         btnInserir = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
+        txtCEP = new javax.swing.JFormattedTextField();
+        txtTelRes = new javax.swing.JFormattedTextField();
+        txtCelular = new javax.swing.JFormattedTextField();
+        txtN = new javax.swing.JFormattedTextField();
 
         jLabel1.setText("jLabel1");
 
@@ -153,7 +153,7 @@ public class frmInstrutor extends javax.swing.JFrame {
 
         lblNome.setText("Nome");
 
-        txtNome.setEditable(false);
+        txtNome.setEnabled(false);
 
         lblSexo.setText("Sexo");
 
@@ -167,15 +167,15 @@ public class frmInstrutor extends javax.swing.JFrame {
 
         lblEndereco.setText("Endereço");
 
-        txtEndereco.setEditable(false);
+        txtEndereco.setEnabled(false);
 
         lblBairro.setText("Bairro");
 
-        txtBairro.setEditable(false);
+        txtBairro.setEnabled(false);
 
         lblCidade.setText("Cidade");
 
-        txtCidade.setEditable(false);
+        txtCidade.setEnabled(false);
 
         lblEstado.setText("Estado");
 
@@ -184,33 +184,33 @@ public class frmInstrutor extends javax.swing.JFrame {
 
         lblRG.setText("RG");
 
-        txtRG.setEditable(false);
         try {
             txtRG.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###.###-#")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtRG.setEnabled(false);
 
         lblFormacao.setText("Formação");
 
-        txtFormacao.setEditable(false);
+        txtFormacao.setEnabled(false);
 
         lblEmail.setText("Email");
 
-        txtEmail.setEditable(false);
+        txtEmail.setEnabled(false);
 
         lblAreaAtuacao.setText("Área de atuação");
 
-        txtAreaAtuacao.setEditable(false);
+        txtAreaAtuacao.setEnabled(false);
 
         lblDataNascimto.setText("Data Nascimto");
 
-        txtDataNascimto.setEditable(false);
         try {
             txtDataNascimto.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtDataNascimto.setEnabled(false);
         txtDataNascimto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDataNascimtoActionPerformed(evt);
@@ -224,19 +224,11 @@ public class frmInstrutor extends javax.swing.JFrame {
 
         lblN.setText("N°");
 
-        txtN.setEditable(false);
-
         lblCEP.setText("CEP");
-
-        txtCEP.setEditable(false);
 
         lblTelRes.setText("Tel. Res");
 
-        txtTelRes.setEditable(false);
-
         lblCelular.setText("Celular");
-
-        txtCelular.setEditable(false);
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
@@ -281,64 +273,66 @@ public class frmInstrutor extends javax.swing.JFrame {
             }
         });
 
+        try {
+            txtCEP.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtCEP.setEnabled(false);
+
+        try {
+            txtTelRes.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) ####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtTelRes.setEnabled(false);
+
+        try {
+            txtCelular.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtCelular.setEnabled(false);
+
+        txtN.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        txtN.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
+                                .addGap(43, 43, 43)
                                 .addComponent(lblNome)
                                 .addGap(10, 10, 10)
                                 .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(81, 81, 81))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
+                                .addGap(46, 46, 46)
                                 .addComponent(lblSexo)
                                 .addGap(10, 10, 10)
                                 .addComponent(cmbSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(245, 245, 245)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblDataNascimto)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtDataNascimto, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblN)
-                                    .addComponent(lblEstadoCivil)
-                                    .addComponent(lblCEP)
-                                    .addComponent(lblTelRes)
-                                    .addComponent(lblCelular))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbEstadoCivil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtN)
-                                    .addComponent(txtCEP)
-                                    .addComponent(txtTelRes)
-                                    .addComponent(txtCelular))))
-                        .addGap(1, 1, 1))
+                        .addComponent(lblDataNascimto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDataNascimto, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
+                        .addGap(51, 51, 51)
                         .addComponent(lblCPF)
                         .addGap(10, 10, 10)
                         .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addComponent(lblEndereco)
-                        .addGap(10, 10, 10)
-                        .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
+                        .addGap(42, 42, 42)
                         .addComponent(lblBairro)
                         .addGap(10, 10, 10)
                         .addComponent(txtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
+                        .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblFormacao)
                             .addComponent(lblRG)
@@ -346,7 +340,12 @@ public class frmInstrutor extends javax.swing.JFrame {
                             .addComponent(lblEmail))
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtRG, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtRG, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(261, 261, 261)
+                                .addComponent(lblCelular)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCelular))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(txtFormacao, javax.swing.GroupLayout.Alignment.LEADING)
@@ -364,6 +363,7 @@ public class frmInstrutor extends javax.swing.JFrame {
                                 .addComponent(txtAreaAtuacao, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
                         .addComponent(btnConsultar)
                         .addGap(30, 30, 30)
                         .addComponent(btnInserir)
@@ -372,8 +372,28 @@ public class frmInstrutor extends javax.swing.JFrame {
                         .addGap(32, 32, 32)
                         .addComponent(btnExcluir)
                         .addGap(30, 30, 30)
-                        .addComponent(btnSair)))
-                .addGap(27, 27, 27))
+                        .addComponent(btnSair))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(396, 396, 396)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lblN)
+                                    .addComponent(lblEstadoCivil)
+                                    .addComponent(lblCEP)
+                                    .addComponent(lblTelRes)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(25, 25, 25)
+                                .addComponent(lblEndereco)
+                                .addGap(10, 10, 10)
+                                .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbEstadoCivil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCEP)
+                            .addComponent(txtTelRes)
+                            .addComponent(txtN))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -401,7 +421,7 @@ public class frmInstrutor extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblEstadoCivil)
                         .addComponent(cmbEstadoCivil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(6, 6, 6)
+                .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(3, 3, 3)
@@ -410,7 +430,7 @@ public class frmInstrutor extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblN)
                         .addComponent(txtN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(8, 8, 8)
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(3, 3, 3)
@@ -419,7 +439,7 @@ public class frmInstrutor extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblCEP)
                         .addComponent(txtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(8, 8, 8)
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -435,8 +455,8 @@ public class frmInstrutor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRG)
-                    .addComponent(lblCelular)
-                    .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCelular, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFormacao)
@@ -447,7 +467,7 @@ public class frmInstrutor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblEmail))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConsultar)
                     .addComponent(btnInserir)
@@ -634,18 +654,18 @@ public class frmInstrutor extends javax.swing.JFrame {
     private javax.swing.JLabel lblTelRes;
     private javax.swing.JTextField txtAreaAtuacao;
     private javax.swing.JTextField txtBairro;
-    private javax.swing.JTextField txtCEP;
+    private javax.swing.JFormattedTextField txtCEP;
     private javax.swing.JFormattedTextField txtCPF;
-    private javax.swing.JTextField txtCelular;
+    private javax.swing.JFormattedTextField txtCelular;
     private javax.swing.JTextField txtCidade;
     private javax.swing.JFormattedTextField txtDataNascimto;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEndereco;
     private javax.swing.JTextField txtFormacao;
-    private javax.swing.JTextField txtN;
+    private javax.swing.JFormattedTextField txtN;
     private javax.swing.JTextField txtNome;
     private javax.swing.JFormattedTextField txtRG;
-    private javax.swing.JTextField txtTelRes;
+    private javax.swing.JFormattedTextField txtTelRes;
     // End of variables declaration//GEN-END:variables
     DaoInstrutor daoInst;
 }

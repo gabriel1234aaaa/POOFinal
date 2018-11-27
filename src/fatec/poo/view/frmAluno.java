@@ -110,7 +110,6 @@ public class frmAluno extends javax.swing.JFrame {
         lblEscolaridade = new javax.swing.JLabel();
         cmbEscolaridade = new javax.swing.JComboBox<>();
         lblN = new javax.swing.JLabel();
-        txtN = new javax.swing.JTextField();
         lblCEP = new javax.swing.JLabel();
         txtCEP = new javax.swing.JFormattedTextField();
         lblTelRes = new javax.swing.JLabel();
@@ -122,6 +121,7 @@ public class frmAluno extends javax.swing.JFrame {
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
+        txtN = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastrar Aluno");
@@ -199,8 +199,6 @@ public class frmAluno extends javax.swing.JFrame {
 
         lblN.setText("N°");
 
-        txtN.setEnabled(false);
-
         lblCEP.setText("CEP");
 
         try {
@@ -271,6 +269,9 @@ public class frmAluno extends javax.swing.JFrame {
             }
         });
 
+        txtN.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        txtN.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -322,24 +323,26 @@ public class frmAluno extends javax.swing.JFrame {
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtCEP)
-                            .addComponent(txtN)
                             .addComponent(cmbEscolaridade, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtDataNascto)
                             .addComponent(txtTelRes)
-                            .addComponent(txtCelular, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                            .addComponent(txtCelular)
+                            .addComponent(txtN))
                         .addGap(25, 25, 25))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(btnInserir)
-                        .addGap(30, 30, 30)
-                        .addComponent(btnAlterar)
-                        .addGap(30, 30, 30)
-                        .addComponent(btnExcluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSair)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(79, 79, 79)
+                                .addComponent(btnInserir)
+                                .addGap(30, 30, 30)
+                                .addComponent(btnAlterar)
+                                .addGap(30, 30, 30)
+                                .addComponent(btnExcluir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnSair)))
                         .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -566,7 +569,7 @@ public class frmAluno extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtDataNascto;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEndereco;
-    private javax.swing.JTextField txtN;
+    private javax.swing.JFormattedTextField txtN;
     private javax.swing.JTextField txtNome;
     private javax.swing.JFormattedTextField txtRG;
     private javax.swing.JFormattedTextField txtTelRes;

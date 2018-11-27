@@ -1,6 +1,6 @@
 package fatec.poo.model;
 
-public abstract class Pessoa {
+public class Pessoa {
     private String Nome;
     private String DataNasc;
     private String Endereco;
@@ -173,4 +173,5 @@ public abstract class Pessoa {
             }
         }
     }
+    
 }

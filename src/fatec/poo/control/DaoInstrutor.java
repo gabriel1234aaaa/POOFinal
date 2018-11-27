@@ -6,6 +6,7 @@
 package fatec.poo.control;
 
 import fatec.poo.model.Instrutor;
+import fatec.poo.model.Pessoa;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,13 +16,14 @@ import java.sql.SQLException;
  *
  * @author Churras
  */
-public class DaoInstrutor {
+public class DaoInstrutor{
 
     private Connection conn;
     private DaoPessoa daoPessoa;
 
     public DaoInstrutor(Connection conn) {
         this.conn = conn;
+        daoPessoa = new DaoPessoa(conn);
     }
 
     public void inserir(Instrutor instrutor) {
@@ -52,7 +54,8 @@ public class DaoInstrutor {
 
             ps.setString(1, instrutor.getFormacao());
             ps.setString(2, instrutor.getAreaAtuacao());
-
+            ps.setString(3, instrutor.getCPF());
+            
             ps.execute();
 
         } catch (SQLException ex) {

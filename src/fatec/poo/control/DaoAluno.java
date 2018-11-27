@@ -6,19 +6,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DaoAluno {
+public class DaoAluno{
 
     private Connection conn;
+    private DaoPessoa daoPessoa;
 
     public DaoAluno(Connection conn) {
         this.conn = conn;
+        daoPessoa = new DaoPessoa(conn);
     }
 
     public void inserir(Aluno aluno) {
         PreparedStatement ps = null;
 
         try {
-            ps = conn.prepareStatement("INSERT INTO PESSOA(CPF, NOME, DATANASC, "
+            /*ps = conn.prepareStatement("INSERT INTO PESSOA(CPF, NOME, DATANASC, "
                     + "ENDERECO, NUMERO, BAIRRO, CIDADE, ESTADO, CEP, TELEFONE, "
                     + "CELULAR, SEXO, ESTADOCIVIL, RG, EMAIL) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, "
@@ -40,7 +42,9 @@ public class DaoAluno {
             ps.setString(14, aluno.getRG());
             ps.setString(15, aluno.getEmail());
 
-            ps.execute();
+            ps.execute();*/
+            
+            daoPessoa.inserir(aluno);
 
             ps = conn.prepareStatement("INSERT INTO ALUNO(CPF, ESCOLARIDADE) VALUES (?, ?)");
             ps.setString(1, aluno.getCPF());
@@ -57,7 +61,7 @@ public class DaoAluno {
         PreparedStatement ps = null;
         try {
 
-            ps = conn.prepareStatement("UPDATE PESSOA SET NOME = ?, DATANASC = ?, "
+            /*ps = conn.prepareStatement("UPDATE PESSOA SET NOME = ?, DATANASC = ?, "
                     + "ENDERECO = ?, NUMERO = ?, BAIRRO = ?, CIDADE = ?, ESTADO = ?, "
                     + "CEP = ?, TELEFONE = ?, CELULAR = ?, SEXO = ?, ESTADOCIVIL = ?, "
                     + "RG = ?, EMAIL = ? WHERE CPF = ?");
@@ -78,7 +82,9 @@ public class DaoAluno {
             ps.setString(14, aluno.getEmail());
             ps.setString(15, aluno.getCPF());
 
-            ps.execute();
+            ps.execute();*/
+            
+            daoPessoa.alterar(aluno);
 
             ps = conn.prepareStatement("UPDATE ALUNO SET ESCOLARIDADE = ? "
                     + "WHERE CPF = ?");

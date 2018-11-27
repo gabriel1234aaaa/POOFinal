@@ -91,7 +91,7 @@
                       <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txtDataVig" min="-2" pref="123" max="-2" attributes="0"/>
-                          <Component id="txtValHorInst1" min="-2" pref="123" max="-2" attributes="0"/>
+                          <Component id="txtValHorInst" min="-2" pref="123" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -140,7 +140,7 @@
                       </Group>
                   </Group>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtValHorInst1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtValHorInst" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblDataVigencia1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -228,7 +228,7 @@
     <Component class="javax.swing.JFormattedTextField" name="txtValCurso">
       <Properties>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format subtype="0" type="0"/>
+          <Format format="#,##0.##" subtype="-1" type="0"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -291,10 +291,10 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSairActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="txtValHorInst1">
+    <Component class="javax.swing.JFormattedTextField" name="txtValHorInst">
       <Properties>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-          <Format subtype="0" type="0"/>
+          <Format format="#,##0.00" subtype="-1" type="0"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
