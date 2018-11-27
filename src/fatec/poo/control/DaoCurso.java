@@ -6,10 +6,12 @@
 package fatec.poo.control;
 
 import fatec.poo.model.Curso;
+import java.awt.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -111,7 +113,7 @@ public class DaoCurso {
             ps.setString(1, curso.getSigla());
 
             ps.execute();
-            
+
             ps = conn.prepareStatement("DELETE FROM CURSO WHERE SIGLA = ?");
 
             ps.setString(1, curso.getSigla());

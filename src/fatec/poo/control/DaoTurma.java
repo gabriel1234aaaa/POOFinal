@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -100,6 +101,25 @@ public class DaoTurma {
             System.out.println(ex.toString());
         }
         return (turma);
+    }
+
+    public ArrayList<String> consultarCursos() {
+        ArrayList<String> cursos = new ArrayList<>();
+
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("SELECT * FROM CURSO");
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next() == true) {
+                cursos.add(rs.getString("NOME"));
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+        return (cursos);
     }
 
     public void excluir(Turma turma) {

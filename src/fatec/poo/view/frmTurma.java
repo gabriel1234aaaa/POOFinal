@@ -315,7 +315,7 @@ public class frmTurma extends javax.swing.JFrame {
         con.setDriver("oracle.jdbc.driver.OracleDriver");
         con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoTurma = new DaoTurma(con.conectar());
-
+        
 
     }//GEN-LAST:event_formWindowOpened
 
