@@ -1,7 +1,6 @@
 package fatec.poo.control;
 
 import fatec.poo.model.APrazo;
-import fatec.poo.model.Curso;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -85,27 +84,27 @@ public class DaoAPrazo {
 
         return (aprazo);
     }
-    
+
     public void excluir(APrazo aprazo) {
         PreparedStatement ps = null;
-        
+
         try {
             ps = conn.prepareStatement("UPDATE MATRICULA SET CODAPRAZO = null "
                     + "WHERE CODAPRAZO = ?");
-            
+
             ps.setInt(1, aprazo.getCodigo());
-            
+
             ps.execute();
-            
+
             ps = conn.prepareStatement("DELETE FROM APRAZO WHERE CODIGO = ?");
-            
+
             ps.setInt(1, aprazo.getCodigo());
-            
+
             ps.execute();
-            
+
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
     }
-    
+
 }

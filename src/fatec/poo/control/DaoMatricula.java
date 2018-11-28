@@ -31,21 +31,21 @@ public class DaoMatricula {
             ps.setString(7, matricula.getTurma().getSiglaTurma());
 
             ps.execute();
-            
+
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
-        
+
     }
-    
-    public void alterar(Matricula matricula){
+
+    public void alterar(Matricula matricula) {
         PreparedStatement ps = null;
 
         try {
-            ps = conn.prepareStatement("UPDATE MATRICULA SET DTMATRICULA = ?, " 
+            ps = conn.prepareStatement("UPDATE MATRICULA SET DTMATRICULA = ?, "
                     + "QTDEFALTAS = ?, NOTA = ?, CODAPRAZO = ?, "
                     + "CODAVISTA = ? WHERE SIGLATURMA = ? AND CPFALUNO = ?");
-            
+
             ps.setString(1, matricula.getData());
             ps.setInt(2, matricula.getQtdeFaltas());
             ps.setDouble(3, matricula.getNota());
@@ -53,15 +53,15 @@ public class DaoMatricula {
             ps.setInt(5, matricula.getAvista().getCodigo());
             ps.setString(6, matricula.getTurma().getSiglaTurma());
             ps.setString(7, matricula.getAluno().getCPF());
-            
+
             ps.execute();
-            
+
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
-            
+
     }
-    
+
     public Matricula consultar(String cpf, String sigla) {
         Matricula matricula = null;
 
@@ -69,37 +69,54 @@ public class DaoMatricula {
         try {
             ps = conn.prepareStatement("SELECT * FROM MATRICULA "
                     + "WHERE CPFALUNO = ? AND SIGLATURMA = ?");
-            
+
             ps.setString(1, cpf);
             ps.setString(2, sigla);
-            
+
             ResultSet rs = ps.executeQuery();
 
             if (rs.next() == true) {
-                
-                matricula = new Matricula();
-                
+
+                matricula = new Matricula(rs.getString("DTMATRICULA"));
+
                 matricula.setData(rs.getString("DTMATRICULA"));
                 matricula.setQtdeFaltas(rs.getInt("QTDEFALTAS"));
                 matricula.setNota(rs.getDouble("NOTA"));
-                
+
                 DaoAluno da = new DaoAluno(conn);
                 DaoTurma dt = new DaoTurma(conn);
                 DaoAPrazo dap = new DaoAPrazo(conn);
-                
+                DaoAVista dav = new DaoAVista(conn);
+
                 matricula.setAluno(da.consultar(cpf));
                 matricula.setAprazo(dap.consultar(rs.getInt("CODAPRAZO")));
+                matricula.setAvista(dav.consultar(rs.getInt("CODAVISTA")));
                 matricula.setTurma(dt.consultar(sigla));
-                
+
             }
 
             ps.execute();
-            
+
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
         return (matricula);
     }
-    
-    
+
+    public void excluir(Matricula matricula) {
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("DELETE FROM MATRICULA "
+                    + "WHERE CPFALUNO = ? AND SIGLATURMA = ?");
+
+            ps.setString(1, matricula.getAluno().getCPF());
+            ps.setString(2, matricula.getTurma().getSiglaTurma());
+
+            ps.execute();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+    }
+
 }

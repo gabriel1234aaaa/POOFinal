@@ -56,4 +56,20 @@ public class Matricula {
         this.turma = turma;
     }
 
+    public String getData() {
+        return Data;
+    }
+
+    public int getQtdeFaltas() {
+        return QtdeFaltas;
+    }
+
+    public double getNota() {
+        return Nota;
+    }
+
+    public void setData(String Data) {
+        this.Data = Data;
+    }
+
 }
