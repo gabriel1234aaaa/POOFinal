@@ -28,7 +28,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="lblEmail" min="-2" max="-2" attributes="0"/>
                   <Component id="lblRG" min="-2" max="-2" attributes="0"/>
@@ -82,13 +82,13 @@
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txtCEP" max="32767" attributes="0"/>
-                          <Component id="cmbEscolaridade" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cmbEscolaridade" alignment="0" pref="145" max="32767" attributes="0"/>
                           <Component id="txtDataNascto" alignment="0" max="32767" attributes="0"/>
                           <Component id="txtTelRes" alignment="0" max="32767" attributes="0"/>
                           <Component id="txtCelular" alignment="0" max="32767" attributes="0"/>
                           <Component id="txtN" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -121,7 +121,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblCPF" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtCPF" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -177,7 +177,7 @@
                   <Component id="lblEmail" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtEmail" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnConsultar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnInserir" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -185,7 +185,7 @@
                   <Component id="btnExcluir" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnSair" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="33" max="32767" attributes="0"/>
+              <EmptySpace pref="20" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
