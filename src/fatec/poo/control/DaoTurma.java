@@ -103,6 +103,37 @@ public class DaoTurma {
         return (turma);
     }
 
+     public ArrayList<Turma> consultarTurmas() {
+        ArrayList<Turma> turmas = new ArrayList<>();
+        Turma turma = null;
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("SELECT * FROM TURMA");
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next() == true) {
+                DaoCurso daoCurso = new DaoCurso(conn);
+                DaoInstrutor daoInstrutor = new DaoInstrutor(conn);
+                Curso curso = daoCurso.consultar(rs.getString("SIGLACURSO"));
+                Instrutor instrutor = daoInstrutor.consultar(rs.getString("CPFINST"));
+                turma = new Turma(rs.getString("SIGLATURMA"), rs.getString("DESCRICAO"));
+                turma.setCurso(curso);
+                turma.setInstrutor(instrutor);
+                turma.setDatainicio(rs.getString("DATAINICIO"));
+                turma.setDataTermino(rs.getString("DATATERMINO"));
+                turma.setPeriodo(rs.getString("PERIODO"));
+                turma.setQtdVagas(rs.getInt("QTDEVAGAS"));
+                turma.setObservacoes(rs.getString("OBSERVACOES"));
+
+                turmas.add(turma);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+        return (turmas);
+    }
    
 
    

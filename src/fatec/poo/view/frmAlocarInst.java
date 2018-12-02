@@ -7,8 +7,11 @@ package fatec.poo.view;
 
 import fatec.poo.control.Conexao;
 import fatec.poo.control.DaoCurso;
+import fatec.poo.control.DaoInstrutor;
 import fatec.poo.control.DaoTurma;
 import fatec.poo.model.Curso;
+import fatec.poo.model.Instrutor;
+import fatec.poo.model.Turma;
 import java.util.ArrayList;
 
 /**
@@ -38,8 +41,8 @@ public class frmAlocarInst extends javax.swing.JFrame {
         lblTurma = new javax.swing.JLabel();
         cmbTurma = new javax.swing.JComboBox<>();
         lblInstrutor = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        cmbSituacao = new javax.swing.JLabel();
+        cmbInstrutor = new javax.swing.JComboBox<>();
+        lblSituacao = new javax.swing.JLabel();
         txtSituacao = new javax.swing.JTextField();
         btnAlocar = new javax.swing.JButton();
         btnLiberar = new javax.swing.JButton();
@@ -60,7 +63,7 @@ public class frmAlocarInst extends javax.swing.JFrame {
 
         lblInstrutor.setText("Instrutor");
 
-        cmbSituacao.setText("Situação");
+        lblSituacao.setText("Situação");
 
         txtSituacao.setEnabled(false);
 
@@ -87,13 +90,13 @@ public class frmAlocarInst extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cmbSituacao)
+                        .addComponent(lblSituacao)
                         .addGap(15, 15, 15)
                         .addComponent(txtSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblInstrutor)
                         .addGap(13, 13, 13)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cmbInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblCurso)
@@ -126,10 +129,10 @@ public class frmAlocarInst extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblInstrutor)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbInstrutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbSituacao)
+                    .addComponent(lblSituacao)
                     .addComponent(txtSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -145,7 +148,7 @@ public class frmAlocarInst extends javax.swing.JFrame {
         lblTurma.getAccessibleContext().setAccessibleName("lblTurma");
         cmbTurma.getAccessibleContext().setAccessibleName("cmbTurma");
         lblInstrutor.getAccessibleContext().setAccessibleName("lblInstrutor");
-        cmbSituacao.getAccessibleContext().setAccessibleName("cmbSituacao");
+        lblSituacao.getAccessibleContext().setAccessibleName("cmbSituacao");
         txtSituacao.getAccessibleContext().setAccessibleName("txtSituacao");
         btnAlocar.getAccessibleContext().setAccessibleName("btnAlocar");
         btnLiberar.getAccessibleContext().setAccessibleName("btnLiberar");
@@ -160,17 +163,29 @@ public class frmAlocarInst extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        /*Conexao con = new Conexao("BD1711046", "BD1711046");
+        Conexao con = new Conexao("BD1711046", "BD1711046");
         con.setDriver("oracle.jdbc.driver.OracleDriver");
-        con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");*/
-        Conexao con = new Conexao("SYSTEM", "3xyei57n");
-        con.setDriver("oracle.jdbc.driver.OracleDriver");
-        con.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+     
+
         daoCurso = new DaoCurso(con.conectar());
         ArrayList<Curso> cursos = daoCurso.consultarCursos();
         for (Curso curso : cursos) {
             cmbCurso.addItem(curso.getNome());
         }
+
+        daoTurma = new DaoTurma(con.conectar());
+        ArrayList<Turma> turmas = daoTurma.consultarTurmas();
+        for (Turma turma : turmas) {
+            cmbTurma.addItem(turma.getDescricao());
+        }
+
+        daoInst = new DaoInstrutor(con.conectar());
+        ArrayList<Instrutor> intrutores = daoInst.consultarInstrutores();
+        for (Instrutor instrutor : intrutores) {
+            cmbInstrutor.addItem(instrutor.getNome());
+        }
+
 
     }//GEN-LAST:event_formWindowOpened
 
@@ -214,14 +229,15 @@ public class frmAlocarInst extends javax.swing.JFrame {
     private javax.swing.JButton btnLiberar;
     private javax.swing.JButton btnSair;
     private javax.swing.JComboBox<String> cmbCurso;
-    private javax.swing.JLabel cmbSituacao;
+    private javax.swing.JComboBox<String> cmbInstrutor;
     private javax.swing.JComboBox<String> cmbTurma;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel lblCurso;
     private javax.swing.JLabel lblInstrutor;
+    private javax.swing.JLabel lblSituacao;
     private javax.swing.JLabel lblTurma;
     private javax.swing.JTextField txtSituacao;
     // End of variables declaration//GEN-END:variables
-DaoTurma daoTurma;
-DaoCurso daoCurso;
+    DaoTurma daoTurma;
+    DaoCurso daoCurso;
+    DaoInstrutor daoInst;
 }

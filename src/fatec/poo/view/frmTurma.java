@@ -317,6 +317,7 @@ public class frmTurma extends javax.swing.JFrame {
         Conexao con = new Conexao("BD1711046", "BD1711046");
         con.setDriver("oracle.jdbc.driver.OracleDriver");
         con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoTurma = new DaoTurma(con.conectar());
         daoCurso = new DaoCurso(con.conectar());
         ArrayList<Curso> cursos = daoCurso.consultarCursos();
         for (Curso curso : cursos) {

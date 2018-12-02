@@ -527,7 +527,7 @@ public class frmInstrutor extends javax.swing.JFrame {
                 txtEmail.setText(instrutor.getEmail());
                 txtAreaAtuacao.setText(instrutor.getAreaAtuacao());
                 txtFormacao.setText(instrutor.getFormacao());
-                
+
             } else {
                 btnInserir.setEnabled(true);
                 btnAlterar.setEnabled(false);
@@ -563,7 +563,7 @@ public class frmInstrutor extends javax.swing.JFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         // TODO add your handling code here:
-         try {
+        try {
             Instrutor instrutor = formToObject();
             daoInst.alterar(instrutor);
             JOptionPane.showMessageDialog(this, "O Instrutor foi alterado com sucesso!", "Alteração", JOptionPane.INFORMATION_MESSAGE);

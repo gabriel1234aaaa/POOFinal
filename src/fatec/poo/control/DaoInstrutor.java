@@ -11,12 +11,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
  * @author Churras
  */
-public class DaoInstrutor{
+public class DaoInstrutor {
 
     private Connection conn;
     private DaoPessoa daoPessoa;
@@ -55,7 +56,7 @@ public class DaoInstrutor{
             ps.setString(1, instrutor.getFormacao());
             ps.setString(2, instrutor.getAreaAtuacao());
             ps.setString(3, instrutor.getCPF());
-            
+
             ps.execute();
 
         } catch (SQLException ex) {
@@ -98,6 +99,43 @@ public class DaoInstrutor{
             System.out.println(ex.toString());
         }
         return (instrutor);
+    }
+
+    public ArrayList<Instrutor> consultarInstrutores() {
+        ArrayList<Instrutor> instrutores = new ArrayList<>();
+        Instrutor instrutor = null;
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("SELECT * FROM INSTRUTOR i "
+                    + "INNER JOIN PESSOA p ON i.CPF = p.CPF");
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next() == true) {
+                instrutor = new Instrutor(rs.getString("NOME"), rs.getString("CPF"));
+                instrutor.setDataNasc(rs.getString("DATANASC"));
+                instrutor.setEndereco(rs.getString("ENDERECO"));
+                instrutor.setNumero(rs.getInt("NUMERO"));
+                instrutor.setBairro(rs.getString("BAIRRO"));
+                instrutor.setCidade(rs.getString("CIDADE"));
+                instrutor.setEstado(rs.getString("ESTADO"));
+                instrutor.setCEP(rs.getString("CEP"));
+                instrutor.setTelefone(rs.getString("TELEFONE"));
+                instrutor.setCelular(rs.getString("CELULAR"));
+                instrutor.setSexo(rs.getString("SEXO"));
+                instrutor.setEstadoCivil(rs.getString("ESTADOCIVIL"));
+                instrutor.setRG(rs.getString("RG"));
+                instrutor.setEmail(rs.getString("EMAIL"));
+                instrutor.setFormacao(rs.getString("FORMACAO"));
+                instrutor.setAreaAtuacao(rs.getString("AREAATUACAO"));
+
+                instrutores.add(instrutor);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+        return (instrutores);
     }
 
     public void excluir(Instrutor instrutor) {

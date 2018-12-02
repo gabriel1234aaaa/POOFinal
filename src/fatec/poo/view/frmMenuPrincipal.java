@@ -90,6 +90,11 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         mnuOperacoes.setText("Operações");
 
         mnuOpeAlocInst.setText("Alocar Instrutor");
+        mnuOpeAlocInst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpeAlocInstActionPerformed(evt);
+            }
+        });
         mnuOperacoes.add(mnuOpeAlocInst);
 
         mnuOpeEfeMat.setText("Efetuar Matrícula");
@@ -136,6 +141,11 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
     private void mnuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSairActionPerformed
         dispose();
     }//GEN-LAST:event_mnuSairActionPerformed
+
+    private void mnuOpeAlocInstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpeAlocInstActionPerformed
+        frmAlocarInst frm = new frmAlocarInst();
+        frm.setVisible(true);
+    }//GEN-LAST:event_mnuOpeAlocInstActionPerformed
 
     /**
      * @param args the command line arguments
