@@ -7,10 +7,12 @@ package fatec.poo.view;
 
 import fatec.poo.control.Conexao;
 import fatec.poo.control.DaoTurma;
+import fatec.poo.model.Curso;
 import fatec.poo.model.Turma;
 import java.awt.Component;
 import java.awt.HeadlessException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -48,6 +50,7 @@ public class frmTurma extends javax.swing.JFrame {
         btnConsultar.setEnabled(true);
         btnSair.setEnabled(true);
         cmbCurso.setEnabled(true);
+        txtSiglaTurma.setEnabled(true);
         cmbCurso.requestFocus();
     }
 
@@ -63,7 +66,7 @@ public class frmTurma extends javax.swing.JFrame {
         turma.setPeriodo(cmbPeriodo.getSelectedItem().toString());
         turma.setDatainicio(txtDataIni.getText().replaceAll("[^0-9]", ""));
         turma.setDataTermino(txtDataTerm.getText().replaceAll("[^0-9]", ""));
-        //turma.setCurso(cmbCurso.getSelectedItem());
+        turma.setCurso(daoTurma.consultaSigla(cmbCurso.getSelectedItem().toString()));
 
         return turma;
     }
@@ -121,25 +124,23 @@ public class frmTurma extends javax.swing.JFrame {
 
         lblDtInicio1.setText("Data término");
 
-        txtSiglaTurma.setEnabled(false);
-
         txtNome.setEnabled(false);
 
         txtQtdVagas.setEnabled(false);
 
         cmbPeriodo.setEditable(true);
-        cmbPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Matutino", "Diurno", "Vespertino" }));
         cmbPeriodo.setEnabled(false);
 
         try {
-            txtDataIni.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/###")));
+            txtDataIni.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
         txtDataIni.setEnabled(false);
 
         try {
-            txtDataTerm.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/###")));
+            txtDataTerm.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -198,9 +199,9 @@ public class frmTurma extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblCurso, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblSiglaTurma, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -225,7 +226,6 @@ public class frmTurma extends javax.swing.JFrame {
                                     .addComponent(txtDataTerm, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cmbPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
                         .addComponent(btnConsultar)
                         .addGap(6, 6, 6)
                         .addComponent(btnInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -294,11 +294,13 @@ public class frmTurma extends javax.swing.JFrame {
             btnInserir.setEnabled(false);
             btnAlterar.setEnabled(true);
             btnExcluir.setEnabled(true);
+            cmbCurso.setEnabled(true);
             txtNome.setText(turma.getDescricao());
             txtQtdVagas.setText(String.valueOf(turma.getQtdVagas()));
             cmbPeriodo.getModel().setSelectedItem(turma.getPeriodo());
             txtDataIni.setText(turma.getDatainicio());
             txtDataTerm.setText(turma.getDataTermino());
+            cmbCurso.getModel().setSelectedItem((turma.getCurso() == null) ? " " : turma.getCurso().getNome());
         } else {
             btnInserir.setEnabled(true);
             btnAlterar.setEnabled(false);
@@ -315,7 +317,11 @@ public class frmTurma extends javax.swing.JFrame {
         con.setDriver("oracle.jdbc.driver.OracleDriver");
         con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoTurma = new DaoTurma(con.conectar());
-        
+        ArrayList<Curso> cursos = daoTurma.consultarCursos();
+        for (Curso curso : cursos) {
+            cmbCurso.addItem(curso.getNome());
+        }
+
 
     }//GEN-LAST:event_formWindowOpened
 
@@ -323,6 +329,7 @@ public class frmTurma extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             Turma turma = formToObject();
+            turma.setInstrutor(null);
             daoTurma.inserir(turma);
             JOptionPane.showMessageDialog(this, "A Turma foi inserida com sucesso!", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
             limparCampos();
@@ -334,10 +341,15 @@ public class frmTurma extends javax.swing.JFrame {
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         // TODO add your handling code here:
         try {
-            Turma turma = formToObject();
-            daoTurma.alterar(turma);
-            JOptionPane.showMessageDialog(this, "A Turma foi alterada com sucesso!", "Alteração", JOptionPane.INFORMATION_MESSAGE);
-            limparCampos();
+            if (" ".equals(cmbCurso.getSelectedItem().toString())) {
+                JOptionPane.showMessageDialog(this, "Selecione um curso.", "Atenção", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                Turma turma = formToObject();
+                daoTurma.alterar(turma);
+                JOptionPane.showMessageDialog(this, "A Turma foi alterada com sucesso!", "Alteração", JOptionPane.INFORMATION_MESSAGE);
+                limparCampos();
+            }
+
         } catch (HeadlessException | NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
         }

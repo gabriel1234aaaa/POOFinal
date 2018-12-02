@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 /**
@@ -101,16 +102,11 @@ public class DaoCurso {
     public void excluir(Curso curso) {
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("DELETE FROM MATRICULA WHERE SIGLATURMA IN ("
-                    + "SELECT SIGLATURMA FROM TURMA WHERE SIGLACURSO = ?)");
-
-            ps.setString(1, curso.getSigla());
-
-            ps.execute();
-
-            ps = conn.prepareStatement("DELETE FROM TURMA WHERE SIGLACURSO = ?");
-
-            ps.setString(1, curso.getSigla());
+            ps = conn.prepareStatement("UPDATE TURMA SET SIGLACURSO = ? "
+                    + "WHERE SIGLACURSO = ?");
+            
+            ps.setNull(1, Types.VARCHAR);
+            ps.setString(2, curso.getSigla());
 
             ps.execute();
 
