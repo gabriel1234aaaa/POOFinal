@@ -5,6 +5,12 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoCurso;
+import fatec.poo.control.DaoTurma;
+import fatec.poo.model.Curso;
+import java.util.ArrayList;
+
 /**
  *
  * @author 0030481711010
@@ -42,6 +48,11 @@ public class frmAlocarInst extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Alocar Instrutor");
         setSize(new java.awt.Dimension(90, 90));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         lblCurso.setText("Curso");
 
@@ -147,6 +158,22 @@ public class frmAlocarInst extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        /*Conexao con = new Conexao("BD1711046", "BD1711046");
+        con.setDriver("oracle.jdbc.driver.OracleDriver");
+        con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");*/
+        Conexao con = new Conexao("SYSTEM", "3xyei57n");
+        con.setDriver("oracle.jdbc.driver.OracleDriver");
+        con.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        daoCurso = new DaoCurso(con.conectar());
+        ArrayList<Curso> cursos = daoCurso.consultarCursos();
+        for (Curso curso : cursos) {
+            cmbCurso.addItem(curso.getNome());
+        }
+
+    }//GEN-LAST:event_formWindowOpened
+
     /**
      * @param args the command line arguments
      */
@@ -195,4 +222,6 @@ public class frmAlocarInst extends javax.swing.JFrame {
     private javax.swing.JLabel lblTurma;
     private javax.swing.JTextField txtSituacao;
     // End of variables declaration//GEN-END:variables
+DaoTurma daoTurma;
+DaoCurso daoCurso;
 }

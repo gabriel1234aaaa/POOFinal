@@ -71,6 +71,59 @@ public class DaoCurso {
             System.out.println(ex.toString());
         }
     }
+    
+     public Curso consultaSigla(String nome) {
+        Curso curso = null;
+
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("SELECT * FROM CURSO c "
+                    + " WHERE c.NOME = ?");
+
+            ps.setString(1, nome);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next() == true) {
+                curso = new Curso(rs.getString("SIGLA"), rs.getString("NOME"));
+                curso.setCargaHoraria(rs.getInt("CARGAHORARIA"));
+                curso.setValor(rs.getDouble("VALOR"));
+                curso.setDataVigencia(rs.getString("DATAVIGENCIA"));
+                curso.setValorHoraInstrutor(rs.getDouble("VALORHORAINSTRUTOR"));
+                curso.setPrograma(rs.getString("PROGRAMA"));
+
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+        return (curso);
+    }
+    
+     public ArrayList<Curso> consultarCursos() {
+        ArrayList<Curso> cursos = new ArrayList<>();
+        Curso curso = null;
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement("SELECT * FROM CURSO");
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next() == true) {
+                curso = new Curso(rs.getString("SIGLA"), rs.getString("NOME"));
+                curso.setCargaHoraria(rs.getInt("CARGAHORARIA"));
+                curso.setValor(rs.getDouble("VALOR"));
+                curso.setDataVigencia(rs.getString("DATAVIGENCIA"));
+                curso.setValorHoraInstrutor(rs.getDouble("VALORHORAINSTRUTOR"));
+                curso.setPrograma(rs.getString("PROGRAMA"));
+
+                cursos.add(curso);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+        return (cursos);
+    }
 
     public Curso consultar(String sigla) {
         Curso curso = null;

@@ -6,6 +6,7 @@
 package fatec.poo.view;
 
 import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoCurso;
 import fatec.poo.control.DaoTurma;
 import fatec.poo.model.Curso;
 import fatec.poo.model.Turma;
@@ -66,7 +67,7 @@ public class frmTurma extends javax.swing.JFrame {
         turma.setPeriodo(cmbPeriodo.getSelectedItem().toString());
         turma.setDatainicio(txtDataIni.getText().replaceAll("[^0-9]", ""));
         turma.setDataTermino(txtDataTerm.getText().replaceAll("[^0-9]", ""));
-        turma.setCurso(daoTurma.consultaSigla(cmbCurso.getSelectedItem().toString()));
+        turma.setCurso(daoCurso.consultaSigla(cmbCurso.getSelectedItem().toString()));
 
         return turma;
     }
@@ -316,8 +317,8 @@ public class frmTurma extends javax.swing.JFrame {
         Conexao con = new Conexao("BD1711046", "BD1711046");
         con.setDriver("oracle.jdbc.driver.OracleDriver");
         con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
-        daoTurma = new DaoTurma(con.conectar());
-        ArrayList<Curso> cursos = daoTurma.consultarCursos();
+        daoCurso = new DaoCurso(con.conectar());
+        ArrayList<Curso> cursos = daoCurso.consultarCursos();
         for (Curso curso : cursos) {
             cmbCurso.addItem(curso.getNome());
         }
@@ -429,4 +430,5 @@ public class frmTurma extends javax.swing.JFrame {
     private javax.swing.JTextField txtSiglaTurma;
     // End of variables declaration//GEN-END:variables
     DaoTurma daoTurma;
+    DaoCurso daoCurso;
 }
