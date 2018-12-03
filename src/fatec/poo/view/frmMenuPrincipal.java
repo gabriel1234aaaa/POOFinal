@@ -98,6 +98,11 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         mnuOperacoes.add(mnuOpeAlocInst);
 
         mnuOpeEfeMat.setText("Efetuar Matrícula");
+        mnuOpeEfeMat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuOpeEfeMatActionPerformed(evt);
+            }
+        });
         mnuOperacoes.add(mnuOpeEfeMat);
 
         jMenuBar1.add(mnuOperacoes);
@@ -146,6 +151,11 @@ public class frmMenuPrincipal extends javax.swing.JFrame {
         frmAlocarInst frm = new frmAlocarInst();
         frm.setVisible(true);
     }//GEN-LAST:event_mnuOpeAlocInstActionPerformed
+
+    private void mnuOpeEfeMatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuOpeEfeMatActionPerformed
+        frmEfetuarMat frm = new frmEfetuarMat();
+        frm.setVisible(true);
+    }//GEN-LAST:event_mnuOpeEfeMatActionPerformed
 
     /**
      * @param args the command line arguments

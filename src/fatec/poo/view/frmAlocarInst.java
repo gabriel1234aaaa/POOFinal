@@ -12,7 +12,15 @@ import fatec.poo.control.DaoTurma;
 import fatec.poo.model.Curso;
 import fatec.poo.model.Instrutor;
 import fatec.poo.model.Turma;
+import java.awt.Component;
+import java.awt.HeadlessException;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -25,6 +33,22 @@ public class frmAlocarInst extends javax.swing.JFrame {
      */
     public frmAlocarInst() {
         initComponents();
+    }
+
+    private void limparCampos() {
+        for (Component component : getContentPane().getComponents()) {
+            if (!(component instanceof JLabel)) {
+                component.setEnabled(false);
+            }
+            if (component instanceof JTextField) {
+                ((JTextField) component).setText("");
+            } else if (component instanceof JFormattedTextField) {
+                ((JFormattedTextField) component).setValue("");
+            } else if (component instanceof JComboBox) {
+                ((JComboBox) component).setSelectedIndex(0);
+            }
+            btnSair.setEnabled(true);
+        }
     }
 
     /**
@@ -59,7 +83,19 @@ public class frmAlocarInst extends javax.swing.JFrame {
 
         lblCurso.setText("Curso");
 
+        cmbCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbCursoActionPerformed(evt);
+            }
+        });
+
         lblTurma.setText("Turma");
+
+        cmbTurma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTurmaActionPerformed(evt);
+            }
+        });
 
         lblInstrutor.setText("Instrutor");
 
@@ -69,10 +105,20 @@ public class frmAlocarInst extends javax.swing.JFrame {
 
         btnAlocar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnAlocar.setText("Alocar");
+        btnAlocar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlocarActionPerformed(evt);
+            }
+        });
 
         btnLiberar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnLiberar.setText("Liberar");
         btnLiberar.setEnabled(false);
+        btnLiberar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLiberarActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -166,28 +212,77 @@ public class frmAlocarInst extends javax.swing.JFrame {
         Conexao con = new Conexao("BD1711046", "BD1711046");
         con.setDriver("oracle.jdbc.driver.OracleDriver");
         con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
-     
-
-        daoCurso = new DaoCurso(con.conectar());
-        ArrayList<Curso> cursos = daoCurso.consultarCursos();
-        for (Curso curso : cursos) {
-            cmbCurso.addItem(curso.getNome());
-        }
-
-        daoTurma = new DaoTurma(con.conectar());
-        ArrayList<Turma> turmas = daoTurma.consultarTurmas();
-        for (Turma turma : turmas) {
-            cmbTurma.addItem(turma.getDescricao());
-        }
 
         daoInst = new DaoInstrutor(con.conectar());
-        ArrayList<Instrutor> intrutores = daoInst.consultarInstrutores();
-        for (Instrutor instrutor : intrutores) {
+        daoCurso = new DaoCurso(con.conectar());
+        daoTurma = new DaoTurma(con.conectar());
+
+        instrutores = daoInst.consultarInstrutores();
+        for (Instrutor instrutor : instrutores) {
             cmbInstrutor.addItem(instrutor.getNome());
         }
 
+        ArrayList<Curso> cursos = daoCurso.consultarCursos();
+        for (Curso curso : cursos) {
+            cmbCurso.addItem(curso.getSigla());
+        }
 
     }//GEN-LAST:event_formWindowOpened
+
+    private void cmbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCursoActionPerformed
+        ArrayList<Turma> turmas;
+        turmas = daoTurma.consultarTurmas(cmbCurso.getSelectedItem().toString());
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+        for (Turma turma : turmas) {
+            modelo.addElement(turma.getSiglaTurma());
+        }
+        cmbTurma.setModel(modelo);
+        cmbTurma.setSelectedIndex(0);
+    }//GEN-LAST:event_cmbCursoActionPerformed
+
+    private void cmbTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTurmaActionPerformed
+        Turma turma = daoTurma.consultar(cmbTurma.getSelectedItem().toString());
+
+        txtSituacao.setText((turma.getInstrutor() == null) ? "LIBERADO" : "ALOCADO");
+        if ("LIBERADO".equals(txtSituacao.getText())) {
+            btnLiberar.setEnabled(false);
+            btnAlocar.setEnabled(true);
+            cmbInstrutor.setEnabled(true);
+            cmbInstrutor.setSelectedIndex(0);
+        } else {
+            btnLiberar.setEnabled(true);
+            btnAlocar.setEnabled(false);
+            cmbInstrutor.setEnabled(false);
+            cmbInstrutor.getModel().setSelectedItem(turma.getInstrutor().getNome());
+        }
+    }//GEN-LAST:event_cmbTurmaActionPerformed
+
+    private void btnAlocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarActionPerformed
+        try {
+            Turma turma = daoTurma.consultar(cmbTurma.getSelectedItem().toString());
+
+            turma.setInstrutor(instrutores.get(cmbInstrutor.getSelectedIndex()));
+            daoTurma.alterar(turma);
+            JOptionPane.showMessageDialog(this, "O Instrutor foi alocado com sucesso!", "Alocação", JOptionPane.INFORMATION_MESSAGE);
+            cmbTurma.setSelectedIndex(0);
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnAlocarActionPerformed
+
+    private void btnLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberarActionPerformed
+        try {
+            Turma turma = daoTurma.consultar(cmbTurma.getSelectedItem().toString());
+
+            turma.setInstrutor(null);
+            daoTurma.alterar(turma);
+            JOptionPane.showMessageDialog(this, "O Instrutor foi liberado com sucesso!", "Liberação", JOptionPane.INFORMATION_MESSAGE);
+            cmbTurma.setSelectedIndex(0);
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnLiberarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,4 +335,5 @@ public class frmAlocarInst extends javax.swing.JFrame {
     DaoTurma daoTurma;
     DaoCurso daoCurso;
     DaoInstrutor daoInst;
+    ArrayList<Instrutor> instrutores;
 }

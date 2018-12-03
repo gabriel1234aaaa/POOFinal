@@ -67,7 +67,7 @@ public class frmTurma extends javax.swing.JFrame {
         turma.setPeriodo(cmbPeriodo.getSelectedItem().toString());
         turma.setDatainicio(txtDataIni.getText().replaceAll("[^0-9]", ""));
         turma.setDataTermino(txtDataTerm.getText().replaceAll("[^0-9]", ""));
-        turma.setCurso(daoCurso.consultaSigla(cmbCurso.getSelectedItem().toString()));
+        turma.setCurso(daoCurso.consultar(cmbCurso.getSelectedItem().toString()));
 
         return turma;
     }
@@ -303,7 +303,7 @@ public class frmTurma extends javax.swing.JFrame {
             cmbPeriodo.getModel().setSelectedItem(turma.getPeriodo());
             txtDataIni.setText(turma.getDatainicio());
             txtDataTerm.setText(turma.getDataTermino());
-            cmbCurso.getModel().setSelectedItem((turma.getCurso() == null) ? " " : turma.getCurso().getNome());
+            cmbCurso.getModel().setSelectedItem((turma.getCurso() == null) ? " " : turma.getCurso().getSigla());
         } else {
             btnInserir.setEnabled(true);
             btnAlterar.setEnabled(false);
@@ -323,7 +323,7 @@ public class frmTurma extends javax.swing.JFrame {
         daoCurso = new DaoCurso(con.conectar());
         ArrayList<Curso> cursos = daoCurso.consultarCursos();
         for (Curso curso : cursos) {
-            cmbCurso.addItem(curso.getNome());
+            cmbCurso.addItem(curso.getSigla());
         }
         txtSiglaTurma.setEnabled(true);
     }//GEN-LAST:event_formWindowOpened

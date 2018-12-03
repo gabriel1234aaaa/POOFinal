@@ -54,7 +54,7 @@ public class DaoTurma {
 
             ps = conn.prepareStatement("UPDATE TURMA SET SIGLACURSO = ?, "
                     + "DESCRICAO = ?, DATAINICIO = ?, DATATERMINO = ?, PERIODO = ?, "
-                    + "QTDEVAGAS = ?, OBSERVACOES = ? WHERE SIGLATURMA = ?");
+                    + "QTDEVAGAS = ?, OBSERVACOES = ?, CPFINST = ? WHERE SIGLATURMA = ?");
 
             ps.setString(1, turma.getCurso().getSigla());
             ps.setString(2, turma.getDescricao());
@@ -63,7 +63,8 @@ public class DaoTurma {
             ps.setString(5, turma.getPeriodo());
             ps.setInt(6, turma.getQtdVagas());
             ps.setString(7, turma.getObservacoes());
-            ps.setString(8, turma.getSiglaTurma());
+            ps.setString(8, (turma.getInstrutor() == null) ? null : turma.getInstrutor().getCPF());
+            ps.setString(9, turma.getSiglaTurma());
             ps.execute();
 
         } catch (SQLException ex) {
@@ -103,12 +104,14 @@ public class DaoTurma {
         return (turma);
     }
 
-     public ArrayList<Turma> consultarTurmas() {
+    public ArrayList<Turma> consultarTurmas(String siglaCurso) {
         ArrayList<Turma> turmas = new ArrayList<>();
         Turma turma = null;
         PreparedStatement ps = null;
         try {
-            ps = conn.prepareStatement("SELECT * FROM TURMA");
+            ps = conn.prepareStatement("SELECT * FROM TURMA WHERE SIGLACURSO = ?");
+
+            ps.setString(1, siglaCurso);
 
             ResultSet rs = ps.executeQuery();
 
@@ -134,9 +137,6 @@ public class DaoTurma {
         }
         return (turmas);
     }
-   
-
-   
 
     public void excluir(Turma turma) {
         PreparedStatement ps = null;

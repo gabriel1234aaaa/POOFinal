@@ -71,35 +71,8 @@ public class DaoCurso {
             System.out.println(ex.toString());
         }
     }
-    
-     public Curso consultaSigla(String nome) {
-        Curso curso = null;
 
-        PreparedStatement ps = null;
-        try {
-            ps = conn.prepareStatement("SELECT * FROM CURSO c "
-                    + " WHERE c.NOME = ?");
-
-            ps.setString(1, nome);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next() == true) {
-                curso = new Curso(rs.getString("SIGLA"), rs.getString("NOME"));
-                curso.setCargaHoraria(rs.getInt("CARGAHORARIA"));
-                curso.setValor(rs.getDouble("VALOR"));
-                curso.setDataVigencia(rs.getString("DATAVIGENCIA"));
-                curso.setValorHoraInstrutor(rs.getDouble("VALORHORAINSTRUTOR"));
-                curso.setPrograma(rs.getString("PROGRAMA"));
-
-            }
-
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        }
-        return (curso);
-    }
-    
-     public ArrayList<Curso> consultarCursos() {
+    public ArrayList<Curso> consultarCursos() {
         ArrayList<Curso> cursos = new ArrayList<>();
         Curso curso = null;
         PreparedStatement ps = null;
@@ -157,7 +130,7 @@ public class DaoCurso {
         try {
             ps = conn.prepareStatement("UPDATE TURMA SET SIGLACURSO = ? "
                     + "WHERE SIGLACURSO = ?");
-            
+
             ps.setNull(1, Types.VARCHAR);
             ps.setString(2, curso.getSigla());
 

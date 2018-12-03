@@ -5,6 +5,30 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoAPrazo;
+import fatec.poo.control.DaoAVista;
+import fatec.poo.control.DaoAluno;
+import fatec.poo.control.DaoCurso;
+import fatec.poo.control.DaoInstrutor;
+import fatec.poo.control.DaoMatricula;
+import fatec.poo.control.DaoTurma;
+import fatec.poo.model.APrazo;
+import fatec.poo.model.AVista;
+import fatec.poo.model.Aluno;
+import fatec.poo.model.Curso;
+import fatec.poo.model.Instrutor;
+import fatec.poo.model.Matricula;
+import fatec.poo.model.Turma;
+import java.awt.Component;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 /**
  *
  * @author 0030481711010
@@ -18,6 +42,53 @@ public class frmEfetuarMat extends javax.swing.JFrame {
         initComponents();
     }
 
+    private void limparCampos() {
+        for (Component component : getContentPane().getComponents()) {
+            if (!(component instanceof JLabel)) {
+                component.setEnabled(false);
+            }
+            if (component instanceof JTextField) {
+                ((JTextField) component).setText("");
+            } else if (component instanceof JFormattedTextField) {
+                ((JFormattedTextField) component).setValue("");
+            } else if (component instanceof JComboBox) {
+                ((JComboBox) component).setSelectedIndex(0);
+            }
+        }
+
+        btnConsultar.setEnabled(true);
+        txtCPFAluno.setEnabled(true);
+    }
+
+    private Matricula formToObject() {
+
+        Matricula matricula = new Matricula(txtDtMatricula.getText().replaceAll("[^0-9]", ""));
+        Aluno aluno = daoAluno.consultar(txtCPFAluno.getText());
+        Turma turma = daoTurma.consultar(cmbTurma.getSelectedItem().toString());
+        AVista aVista = new AVista();
+        APrazo aPrazo = new APrazo();
+
+        matricula.setAluno(aluno);
+        matricula.setTurma(turma);
+        if (rbtnAVista.isSelected()) {
+            aVista.setAgencia(Integer.parseInt(txtAgencia.getText()));
+            aVista.setNCheque(Integer.parseInt(txtNCheque.getText()));
+            aVista.setValor(Double.parseDouble(txtValor.getText().replace("R$ ", "").replace(".", "").replace(",", ".")));
+            aVista.setPreData(txtDtPagto.getText().replaceAll("[^0-9]", ""));
+            aPrazo = null;
+        } else {
+            aPrazo.setDtVencimento(txtDtVencto.getText().replaceAll("[^0-9]", ""));
+            aPrazo.setQtdeMensalidade(Integer.parseInt(txtQtdeMensal.getText()));
+            aPrazo.setTaxaJuros(Double.parseDouble(txtTxJuros.getText().replace(".", "").replace(",", ".")));
+            aPrazo.setValor(Double.parseDouble(txtValor.getText().replace("R$ ", "").replace(".", "").replace(",", ".")));
+            aVista = null;
+        }
+        matricula.setAprazo(aPrazo);
+        matricula.setAvista(aVista);
+
+        return matricula;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,6 +98,7 @@ public class frmEfetuarMat extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btgPagamento = new javax.swing.ButtonGroup();
         lblDtMatricula = new javax.swing.JLabel();
         lblCurso = new javax.swing.JLabel();
         lblTurma = new javax.swing.JLabel();
@@ -62,6 +134,11 @@ public class frmEfetuarMat extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Efetuar Matrícula");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         lblDtMatricula.setText("Data da Matrícula");
 
@@ -71,11 +148,24 @@ public class frmEfetuarMat extends javax.swing.JFrame {
 
         lblCPFAluno.setText("CPF Aluno");
 
+        cmbCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbCursoActionPerformed(evt);
+            }
+        });
+
+        cmbTurma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTurmaActionPerformed(evt);
+            }
+        });
+
         try {
             txtCPFAluno.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtCPFAluno.setEnabled(false);
 
         try {
             txtDtMatricula.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -93,14 +183,29 @@ public class frmEfetuarMat extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
         btnInserir.setEnabled(false);
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
@@ -116,11 +221,23 @@ public class frmEfetuarMat extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Pagamento"));
 
+        btgPagamento.add(rbtnAVista);
         rbtnAVista.setText("À Vista");
         rbtnAVista.setEnabled(false);
+        rbtnAVista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnAVistaActionPerformed(evt);
+            }
+        });
 
+        btgPagamento.add(rbtnParcelado);
         rbtnParcelado.setText("Parcelado");
         rbtnParcelado.setEnabled(false);
+        rbtnParcelado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbtnParceladoActionPerformed(evt);
+            }
+        });
 
         lblAgencia.setText("Agência");
 
@@ -353,6 +470,125 @@ public class frmEfetuarMat extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
+    private void cmbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCursoActionPerformed
+        cmbTurma.removeAll();
+        DecimalFormat dFormat = new DecimalFormat("R$ ###.##0,00");
+
+        ArrayList<Turma> turmas = daoTurma.consultarTurmas(cmbCurso.getSelectedItem().toString());
+        for (Turma turma : turmas) {
+            cmbTurma.addItem(turma.getSiglaTurma());
+        }
+        Curso curso = daoCurso.consultar(cmbCurso.getSelectedItem().toString());
+        txtValor.setText("R$ " + dFormat.format(curso.getValor()));
+    }//GEN-LAST:event_cmbCursoActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        /*Conexao con = new Conexao("BD1711046", "BD1711046");
+        con.setDriver("oracle.jdbc.driver.OracleDriver");
+        con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+
+        daoCurso = new DaoCurso(con.conectar());
+        ArrayList<Curso> cursos = daoCurso.consultarCursos();
+        for (Curso curso : cursos) {
+            cmbCurso.addItem(curso.getSigla());
+        }
+
+        daoTurma = new DaoTurma(con.conectar());
+        ArrayList<Turma> turmas = daoTurma.consultarTurmas(cmbCurso.getSelectedItem().toString());
+        for (Turma turma : turmas) {
+            cmbTurma.addItem(turma.getSiglaTurma());
+        }*/
+    }//GEN-LAST:event_formWindowOpened
+
+    private void rbtnAVistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnAVistaActionPerformed
+        txtAgencia.setEnabled(true);
+        txtNCheque.setEnabled(true);
+        txtDtPagto.setEnabled(true);
+
+        txtQtdeMensal.setEnabled(false);
+        txtTxJuros.setEnabled(false);
+        txtDtVencto.setEnabled(false);
+    }//GEN-LAST:event_rbtnAVistaActionPerformed
+
+    private void rbtnParceladoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnParceladoActionPerformed
+        txtQtdeMensal.setEnabled(true);
+        txtTxJuros.setEnabled(true);
+        txtDtVencto.setEnabled(true);
+
+        txtAgencia.setEnabled(false);
+        txtNCheque.setEnabled(false);
+        txtDtPagto.setEnabled(false);
+    }//GEN-LAST:event_rbtnParceladoActionPerformed
+
+    private void cmbTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTurmaActionPerformed
+        txtCPFAluno.setEnabled(true);
+        rbtnAVista.setEnabled(true);
+        rbtnParcelado.setEnabled(true);
+        rbtnAVista.setSelected(true);
+    }//GEN-LAST:event_cmbTurmaActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        try {
+            String cpf = txtCPFAluno.getText().replaceAll("[^0-9]", "");
+            if (Aluno.validarCPF(cpf)) {
+                Instrutor instrutor = daoInst.consultar(cpf);
+                if (instrutor == null) {
+                    Aluno aluno = daoAluno.consultar(cpf);
+
+                    txtCPFAluno.setEnabled(false);
+                    btnConsultar.setEnabled(false);
+
+                    if (aluno != null) {
+                        btnInserir.setEnabled(false);
+                        btnAlterar.setEnabled(true);
+                        btnExcluir.setEnabled(true);
+                        txtNome.setText(aluno.getNome());
+
+                    } else {
+                        btnInserir.setEnabled(true);
+                        btnAlterar.setEnabled(false);
+                        btnExcluir.setEnabled(false);
+                    }
+
+                    txtNome.requestFocus();
+                } else {
+                    JOptionPane.showMessageDialog(this, "CPF já cadastrado para um instrutor!", "CPF Inválido", JOptionPane.ERROR_MESSAGE);
+                    txtCPFAluno.requestFocus();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Informe um CPF válido!", "CPF Inválido", JOptionPane.ERROR_MESSAGE);
+                txtCPFAluno.requestFocus();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        try {
+            Matricula matricula  = formToObject();
+            
+            daoMatricula.inserir(matricula);
+            JOptionPane.showMessageDialog(this, "A Matrícula foi inserida com sucesso!", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        try {
+            Matricula matricula  = formToObject();
+            
+            daoMatricula.alterar(matricula);
+            JOptionPane.showMessageDialog(this, "A Matrícula foi alterada com sucesso!", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -389,6 +625,7 @@ public class frmEfetuarMat extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup btgPagamento;
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExcluir;
@@ -422,4 +659,11 @@ public class frmEfetuarMat extends javax.swing.JFrame {
     private javax.swing.JTextField txtTxJuros;
     private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
+    DaoCurso daoCurso;
+    DaoTurma daoTurma;
+    DaoAluno daoAluno;
+    DaoAVista daoAVista;
+    DaoAPrazo daoAPrazo;
+    DaoInstrutor daoInst;
+    DaoMatricula daoMatricula;
 }

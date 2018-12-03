@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DaoAluno{
+public class DaoAluno {
 
     private Connection conn;
     private DaoPessoa daoPessoa;
@@ -20,30 +20,7 @@ public class DaoAluno{
         PreparedStatement ps = null;
 
         try {
-            /*ps = conn.prepareStatement("INSERT INTO PESSOA(CPF, NOME, DATANASC, "
-                    + "ENDERECO, NUMERO, BAIRRO, CIDADE, ESTADO, CEP, TELEFONE, "
-                    + "CELULAR, SEXO, ESTADOCIVIL, RG, EMAIL) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, "
-                    + "?, ?, ?, ?, ?, ?, ?)");
 
-            ps.setString(1, aluno.getCPF());
-            ps.setString(2, aluno.getNome());
-            ps.setString(3, aluno.getDataNasc());
-            ps.setString(4, aluno.getEndereco());
-            ps.setInt(5, aluno.getNumero());
-            ps.setString(6, aluno.getBairro());
-            ps.setString(7, aluno.getCidade());
-            ps.setString(8, aluno.getEstado());
-            ps.setString(9, aluno.getCEP());
-            ps.setString(10, aluno.getTelefone());
-            ps.setString(11, aluno.getCelular());
-            ps.setString(12, aluno.getSexo());
-            ps.setString(13, aluno.getEstadoCivil());
-            ps.setString(14, aluno.getRG());
-            ps.setString(15, aluno.getEmail());
-
-            ps.execute();*/
-            
             daoPessoa.inserir(aluno);
 
             ps = conn.prepareStatement("INSERT INTO ALUNO(CPF, ESCOLARIDADE) VALUES (?, ?)");
@@ -60,30 +37,6 @@ public class DaoAluno{
     public void alterar(Aluno aluno) {
         PreparedStatement ps = null;
         try {
-
-            /*ps = conn.prepareStatement("UPDATE PESSOA SET NOME = ?, DATANASC = ?, "
-                    + "ENDERECO = ?, NUMERO = ?, BAIRRO = ?, CIDADE = ?, ESTADO = ?, "
-                    + "CEP = ?, TELEFONE = ?, CELULAR = ?, SEXO = ?, ESTADOCIVIL = ?, "
-                    + "RG = ?, EMAIL = ? WHERE CPF = ?");
-
-            ps.setString(1, aluno.getNome());
-            ps.setString(2, aluno.getDataNasc());
-            ps.setString(3, aluno.getEndereco());
-            ps.setInt(4, aluno.getNumero());
-            ps.setString(5, aluno.getBairro());
-            ps.setString(6, aluno.getCidade());
-            ps.setString(7, aluno.getEstado());
-            ps.setString(8, aluno.getCEP());
-            ps.setString(9, aluno.getTelefone());
-            ps.setString(10, aluno.getCelular());
-            ps.setString(11, aluno.getSexo());
-            ps.setString(12, aluno.getEstadoCivil());
-            ps.setString(13, aluno.getRG());
-            ps.setString(14, aluno.getEmail());
-            ps.setString(15, aluno.getCPF());
-
-            ps.execute();*/
-            
             daoPessoa.alterar(aluno);
 
             ps = conn.prepareStatement("UPDATE ALUNO SET ESCOLARIDADE = ? "
@@ -139,11 +92,11 @@ public class DaoAluno{
         PreparedStatement ps = null;
         try {
             ps = conn.prepareStatement("DELETE FROM MATRICULA WHERE CPFALUNO = ?");
-            
+
             ps.setString(1, aluno.getCPF());
-            
+
             ps.execute();
-            
+
             ps = conn.prepareStatement("DELETE FROM ALUNO WHERE CPF = ?");
 
             ps.setString(1, aluno.getCPF());
