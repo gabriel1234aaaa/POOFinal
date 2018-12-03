@@ -125,6 +125,8 @@ public class frmTurma extends javax.swing.JFrame {
 
         lblDtInicio1.setText("Data término");
 
+        txtSiglaTurma.setEnabled(false);
+
         txtNome.setEnabled(false);
 
         txtQtdVagas.setEnabled(false);
@@ -323,8 +325,7 @@ public class frmTurma extends javax.swing.JFrame {
         for (Curso curso : cursos) {
             cmbCurso.addItem(curso.getNome());
         }
-
-
+        txtSiglaTurma.setEnabled(true);
     }//GEN-LAST:event_formWindowOpened
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed

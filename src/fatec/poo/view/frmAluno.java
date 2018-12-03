@@ -7,7 +7,9 @@ package fatec.poo.view;
 
 import fatec.poo.control.Conexao;
 import fatec.poo.control.DaoAluno;
+import fatec.poo.control.DaoInstrutor;
 import fatec.poo.model.Aluno;
+import fatec.poo.model.Instrutor;
 import java.awt.Component;
 import java.awt.HeadlessException;
 import javax.swing.JComboBox;
@@ -416,38 +418,44 @@ public class frmAluno extends javax.swing.JFrame {
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         String cpf = txtCPF.getText().replaceAll("[^0-9]", "");
         if (Aluno.validarCPF(cpf)) {
-            Aluno aluno = daoAln.consultar(cpf);
+            Instrutor instrutor = daoInstrutor.consultar(cpf);
+            if (instrutor == null) {
+                Aluno aluno = daoAln.consultar(cpf);
 
-            alterarEstado(getContentPane().getComponents(), true);
-            txtCPF.setEnabled(false);
-            btnConsultar.setEnabled(false);
+                alterarEstado(getContentPane().getComponents(), true);
+                txtCPF.setEnabled(false);
+                btnConsultar.setEnabled(false);
 
-            if (aluno != null) {
-                btnInserir.setEnabled(false);
-                btnAlterar.setEnabled(true);
-                btnExcluir.setEnabled(true);
-                txtNome.setText(aluno.getNome());
-                txtDataNascto.setText(aluno.getDataNasc());
-                cmbSexo.getModel().setSelectedItem(aluno.getSexo().equals("M") ? "Masculino" : "Feminino");
-                cmbEstadoCivil.getModel().setSelectedItem(aluno.getEstadoCivil() + "(a)");
-                cmbEscolaridade.getModel().setSelectedItem(aluno.getEscolaridade());
-                txtEndereco.setText(aluno.getEndereco());
-                txtN.setText(String.valueOf(aluno.getNumero()));
-                txtBairro.setText(aluno.getBairro());
-                txtCEP.setText(aluno.getCEP());
-                txtCidade.setText(aluno.getCidade());
-                cmbEstado.getModel().setSelectedItem(aluno.getEstado());
-                txtTelRes.setText(aluno.getTelefone());
-                txtRG.setText(aluno.getRG());
-                txtCelular.setText(aluno.getCelular());
-                txtEmail.setText(aluno.getEmail());
-            } else {
-                btnInserir.setEnabled(true);
-                btnAlterar.setEnabled(false);
-                btnExcluir.setEnabled(false);
+                if (aluno != null) {
+                    btnInserir.setEnabled(false);
+                    btnAlterar.setEnabled(true);
+                    btnExcluir.setEnabled(true);
+                    txtNome.setText(aluno.getNome());
+                    txtDataNascto.setText(aluno.getDataNasc());
+                    cmbSexo.getModel().setSelectedItem(aluno.getSexo().equals("M") ? "Masculino" : "Feminino");
+                    cmbEstadoCivil.getModel().setSelectedItem(aluno.getEstadoCivil() + "(a)");
+                    cmbEscolaridade.getModel().setSelectedItem(aluno.getEscolaridade());
+                    txtEndereco.setText(aluno.getEndereco());
+                    txtN.setText(String.valueOf(aluno.getNumero()));
+                    txtBairro.setText(aluno.getBairro());
+                    txtCEP.setText(aluno.getCEP());
+                    txtCidade.setText(aluno.getCidade());
+                    cmbEstado.getModel().setSelectedItem(aluno.getEstado());
+                    txtTelRes.setText(aluno.getTelefone());
+                    txtRG.setText(aluno.getRG());
+                    txtCelular.setText(aluno.getCelular());
+                    txtEmail.setText(aluno.getEmail());
+                } else {
+                    btnInserir.setEnabled(true);
+                    btnAlterar.setEnabled(false);
+                    btnExcluir.setEnabled(false);
+                }
+
+                txtNome.requestFocus();
+            }else{
+                JOptionPane.showMessageDialog(this, "CPF já cadastrado para um instrutor!", "CPF Inválido", JOptionPane.ERROR_MESSAGE);
+                txtCPF.requestFocus();
             }
-
-            txtNome.requestFocus();
         } else {
             JOptionPane.showMessageDialog(this, "Informe um CPF válido!", "CPF Inválido", JOptionPane.ERROR_MESSAGE);
             txtCPF.requestFocus();
@@ -459,6 +467,7 @@ public class frmAluno extends javax.swing.JFrame {
         con.setDriver("oracle.jdbc.driver.OracleDriver");
         con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoAln = new DaoAluno(con.conectar());
+        daoInstrutor = new DaoInstrutor(con.conectar());
     }//GEN-LAST:event_formWindowOpened
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
@@ -575,4 +584,5 @@ public class frmAluno extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField txtTelRes;
     // End of variables declaration//GEN-END:variables
     DaoAluno daoAln;
+    DaoInstrutor daoInstrutor;
 }

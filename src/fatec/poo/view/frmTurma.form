@@ -173,6 +173,9 @@
       </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="txtSiglaTurma">
+      <Properties>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtNome">
       <Properties>
