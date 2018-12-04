@@ -21,8 +21,10 @@ import fatec.poo.model.Instrutor;
 import fatec.poo.model.Matricula;
 import fatec.poo.model.Turma;
 import java.awt.Component;
+import java.awt.HeadlessException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -224,18 +226,18 @@ public class frmEfetuarMat extends javax.swing.JFrame {
         btgPagamento.add(rbtnAVista);
         rbtnAVista.setText("À Vista");
         rbtnAVista.setEnabled(false);
-        rbtnAVista.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbtnAVistaActionPerformed(evt);
+        rbtnAVista.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                rbtnAVistaItemStateChanged(evt);
             }
         });
 
         btgPagamento.add(rbtnParcelado);
         rbtnParcelado.setText("Parcelado");
         rbtnParcelado.setEnabled(false);
-        rbtnParcelado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbtnParceladoActionPerformed(evt);
+        rbtnParcelado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                rbtnParceladoItemStateChanged(evt);
             }
         });
 
@@ -471,78 +473,80 @@ public class frmEfetuarMat extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void cmbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCursoActionPerformed
-        cmbTurma.removeAll();
-        DecimalFormat dFormat = new DecimalFormat("R$ ###.##0,00");
 
-        ArrayList<Turma> turmas = daoTurma.consultarTurmas(cmbCurso.getSelectedItem().toString());
+        DecimalFormat dFormat = new DecimalFormat("#,##0.00");
+        ArrayList<Turma> turmas;
+        turmas = daoTurma.consultarTurmas(cmbCurso.getSelectedItem().toString());
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
         for (Turma turma : turmas) {
-            cmbTurma.addItem(turma.getSiglaTurma());
+            modelo.addElement(turma.getSiglaTurma());
         }
         Curso curso = daoCurso.consultar(cmbCurso.getSelectedItem().toString());
         txtValor.setText("R$ " + dFormat.format(curso.getValor()));
+
+        cmbTurma.setModel(modelo);
+        cmbTurma.setSelectedIndex(0);
     }//GEN-LAST:event_cmbCursoActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        /*Conexao con = new Conexao("BD1711046", "BD1711046");
+        Conexao con = new Conexao("BD1711046", "BD1711046");
         con.setDriver("oracle.jdbc.driver.OracleDriver");
         con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
 
+        daoTurma = new DaoTurma(con.conectar());
         daoCurso = new DaoCurso(con.conectar());
+        daoAluno = new DaoAluno(con.conectar());
+        daoAVista = new DaoAVista(con.conectar());
+        daoAPrazo = new DaoAPrazo(con.conectar());
+        daoInst = new DaoInstrutor(con.conectar());
+        daoMatricula = new DaoMatricula(con.conectar());
+
         ArrayList<Curso> cursos = daoCurso.consultarCursos();
         for (Curso curso : cursos) {
             cmbCurso.addItem(curso.getSigla());
         }
-
-        daoTurma = new DaoTurma(con.conectar());
-        ArrayList<Turma> turmas = daoTurma.consultarTurmas(cmbCurso.getSelectedItem().toString());
-        for (Turma turma : turmas) {
-            cmbTurma.addItem(turma.getSiglaTurma());
-        }*/
     }//GEN-LAST:event_formWindowOpened
-
-    private void rbtnAVistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnAVistaActionPerformed
-        txtAgencia.setEnabled(true);
-        txtNCheque.setEnabled(true);
-        txtDtPagto.setEnabled(true);
-
-        txtQtdeMensal.setEnabled(false);
-        txtTxJuros.setEnabled(false);
-        txtDtVencto.setEnabled(false);
-    }//GEN-LAST:event_rbtnAVistaActionPerformed
-
-    private void rbtnParceladoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnParceladoActionPerformed
-        txtQtdeMensal.setEnabled(true);
-        txtTxJuros.setEnabled(true);
-        txtDtVencto.setEnabled(true);
-
-        txtAgencia.setEnabled(false);
-        txtNCheque.setEnabled(false);
-        txtDtPagto.setEnabled(false);
-    }//GEN-LAST:event_rbtnParceladoActionPerformed
 
     private void cmbTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTurmaActionPerformed
         txtCPFAluno.setEnabled(true);
-        rbtnAVista.setEnabled(true);
-        rbtnParcelado.setEnabled(true);
-        rbtnAVista.setSelected(true);
+
     }//GEN-LAST:event_cmbTurmaActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         try {
             String cpf = txtCPFAluno.getText().replaceAll("[^0-9]", "");
             if (Aluno.validarCPF(cpf)) {
-                Instrutor instrutor = daoInst.consultar(cpf);
-                if (instrutor == null) {
-                    Aluno aluno = daoAluno.consultar(cpf);
+                Aluno aluno = daoAluno.consultar(cpf);
+                if (aluno != null) {
 
+                    txtNome.setText(aluno.getNome());
                     txtCPFAluno.setEnabled(false);
                     btnConsultar.setEnabled(false);
+                    rbtnAVista.setEnabled(true);
+                    rbtnParcelado.setEnabled(true);
+                    rbtnParcelado.setSelected(true);
+                    rbtnAVista.setSelected(true);
+                    cmbCurso.setEnabled(false);
+                    cmbTurma.setEnabled(false);
+                    Matricula mat = daoMatricula.consultar(cpf, cmbTurma.getSelectedItem().toString());
 
-                    if (aluno != null) {
+                    if (mat != null) {
                         btnInserir.setEnabled(false);
                         btnAlterar.setEnabled(true);
                         btnExcluir.setEnabled(true);
-                        txtNome.setText(aluno.getNome());
+
+                        if (mat.getAprazo() != null) {
+
+                            rbtnParcelado.setSelected(true);
+                            txtQtdeMensal.setText(String.valueOf(mat.getAprazo().getQtdeMensalidade()));
+                            txtTxJuros.setText(String.valueOf(mat.getAprazo().getTaxaJuros()));
+                            txtDtVencto.setText(String.valueOf(mat.getAprazo().getDtVencimento()));
+                        } else {
+                            rbtnAVista.setSelected(true);
+                            txtAgencia.setText(String.valueOf(mat.getAvista().getAgencia()));
+                            txtNCheque.setText(String.valueOf(mat.getAvista().getNCheque()));
+                            txtDtPagto.setText(String.valueOf(mat.getAvista().getPreData()));
+                        }
 
                     } else {
                         btnInserir.setEnabled(true);
@@ -550,9 +554,8 @@ public class frmEfetuarMat extends javax.swing.JFrame {
                         btnExcluir.setEnabled(false);
                     }
 
-                    txtNome.requestFocus();
                 } else {
-                    JOptionPane.showMessageDialog(this, "CPF já cadastrado para um instrutor!", "CPF Inválido", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "CPF não cadastrado para um aluno!", "CPF Inválido", JOptionPane.ERROR_MESSAGE);
                     txtCPFAluno.requestFocus();
                 }
             } else {
@@ -560,15 +563,15 @@ public class frmEfetuarMat extends javax.swing.JFrame {
                 txtCPFAluno.requestFocus();
             }
 
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
         try {
-            Matricula matricula  = formToObject();
-            
+            Matricula matricula = formToObject();
+
             daoMatricula.inserir(matricula);
             JOptionPane.showMessageDialog(this, "A Matrícula foi inserida com sucesso!", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
             limparCampos();
@@ -579,8 +582,8 @@ public class frmEfetuarMat extends javax.swing.JFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         try {
-            Matricula matricula  = formToObject();
-            
+            Matricula matricula = formToObject();
+
             daoMatricula.alterar(matricula);
             JOptionPane.showMessageDialog(this, "A Matrícula foi alterada com sucesso!", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
             limparCampos();
@@ -588,6 +591,34 @@ public class frmEfetuarMat extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void rbtnAVistaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtnAVistaItemStateChanged
+        txtAgencia.setEnabled(true);
+        txtNCheque.setEnabled(true);
+        txtDtPagto.setEnabled(true);
+
+        txtQtdeMensal.setEnabled(false);
+        txtTxJuros.setEnabled(false);
+        txtDtVencto.setEnabled(false);
+
+        txtQtdeMensal.setText("");
+        txtTxJuros.setText("");
+        txtDtVencto.setText("");
+    }//GEN-LAST:event_rbtnAVistaItemStateChanged
+
+    private void rbtnParceladoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtnParceladoItemStateChanged
+        txtQtdeMensal.setEnabled(true);
+        txtTxJuros.setEnabled(true);
+        txtDtVencto.setEnabled(true);
+
+        txtAgencia.setEnabled(false);
+        txtNCheque.setEnabled(false);
+        txtDtPagto.setEnabled(false);
+
+        txtAgencia.setText("");
+        txtNCheque.setText("");
+        txtDtPagto.setText("");
+    }//GEN-LAST:event_rbtnParceladoItemStateChanged
 
     /**
      * @param args the command line arguments

@@ -1,6 +1,10 @@
 package fatec.poo.control;
 
+import fatec.poo.model.APrazo;
+import fatec.poo.model.AVista;
 import fatec.poo.model.Matricula;
+import fatec.poo.model.Turma;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,26 +80,34 @@ public class DaoMatricula {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next() == true) {
-
-                matricula = new Matricula(rs.getString("DTMATRICULA"));
-
-                matricula.setData(rs.getString("DTMATRICULA"));
-                matricula.setQtdeFaltas(rs.getInt("QTDEFALTAS"));
-                matricula.setNota(rs.getDouble("NOTA"));
-
                 DaoAluno da = new DaoAluno(conn);
                 DaoTurma dt = new DaoTurma(conn);
                 DaoAPrazo dap = new DaoAPrazo(conn);
                 DaoAVista dav = new DaoAVista(conn);
 
+                matricula = new Matricula(rs.getString("DTMATRICULA"));
+                matricula.setQtdeFaltas(rs.getInt("QTDEFALTAS"));
+                matricula.setNota(rs.getDouble("NOTA"));
+
                 matricula.setAluno(da.consultar(cpf));
-                matricula.setAprazo(dap.consultar(rs.getInt("CODAPRAZO")));
-                matricula.setAvista(dav.consultar(rs.getInt("CODAVISTA")));
+
+                BigDecimal idPrazo = (BigDecimal) rs.getObject("CODAPRAZO");
+                BigDecimal idVista = (BigDecimal) rs.getObject("CODAVISTA");
+
+                if (idPrazo != null) {
+                    matricula.setAprazo(dap.consultar(idPrazo.intValue()));
+                } else {
+                    matricula.setAprazo(null);
+                }
+
+                if (idVista != null) {
+                    matricula.setAvista(dav.consultar(idVista.intValue()));
+                } else {
+                    matricula.setAvista(null);
+                }
+
                 matricula.setTurma(dt.consultar(sigla));
-
             }
-
-            ps.execute();
 
         } catch (SQLException ex) {
             System.out.println(ex.toString());

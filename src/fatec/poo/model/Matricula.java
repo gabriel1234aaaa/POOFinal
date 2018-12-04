@@ -39,13 +39,11 @@ public class Matricula {
     }
 
     public void setAprazo(APrazo aprazo) {
-        avista = null;
         this.aprazo = aprazo;
     }
 
     public void setAvista(AVista avista) {
-        aprazo = null;
-        this.avista = avista;
+         this.avista = avista;
     }
 
     public Turma getTurma() {

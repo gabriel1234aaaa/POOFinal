@@ -431,7 +431,7 @@
             <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="rbtnAVista"/>
           </AccessibilityProperties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbtnAVistaActionPerformed"/>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="rbtnAVistaItemStateChanged"/>
           </Events>
         </Component>
         <Component class="javax.swing.JRadioButton" name="rbtnParcelado">
@@ -446,7 +446,7 @@
             <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="rbtnParcelado"/>
           </AccessibilityProperties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbtnParceladoActionPerformed"/>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="rbtnParceladoItemStateChanged"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblAgencia">

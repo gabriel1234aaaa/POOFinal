@@ -64,7 +64,7 @@ public class DaoAPrazo {
         PreparedStatement ps = null;
 
         try {
-            ps = conn.prepareStatement("SELECT * FROM APRAZO ap"
+            ps = conn.prepareStatement("SELECT * FROM APRAZO ap "
                     + "WHERE ap.CODIGO = ?");
 
             ps.setInt(1, codigo);
