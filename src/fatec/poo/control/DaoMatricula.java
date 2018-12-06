@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 public class DaoMatricula {
 
@@ -53,10 +54,23 @@ public class DaoMatricula {
             ps.setString(1, matricula.getData());
             ps.setInt(2, matricula.getQtdeFaltas());
             ps.setDouble(3, matricula.getNota());
-            ps.setInt(4, matricula.getAprazo().getCodigo());
-            ps.setInt(5, matricula.getAvista().getCodigo());
+
+            if (matricula.getAprazo() == null) {
+                ps.setNull(4, Types.INTEGER);
+            } else {
+                ps.setInt(4, matricula.getAprazo().getCodigo());
+            }
+            
+            if (matricula.getAvista() == null) {
+                ps.setNull(5, Types.INTEGER);
+            }else{
+                ps.setInt(5,matricula.getAvista().getCodigo());
+            }
+            System.out.println(matricula.getTurma().getSiglaTurma());
             ps.setString(6, matricula.getTurma().getSiglaTurma());
+            System.out.println(matricula.getAluno().getCPF());
             ps.setString(7, matricula.getAluno().getCPF());
+            
 
             ps.execute();
 

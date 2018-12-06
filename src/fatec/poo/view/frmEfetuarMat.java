@@ -29,6 +29,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 /**
@@ -45,6 +46,16 @@ public class frmEfetuarMat extends javax.swing.JFrame {
     }
 
     private void limparCampos() {
+        for (Component component : jPanel1.getComponents()) {
+            if (component instanceof JTextField) {
+                ((JTextField) component).setText("");
+                ((JTextField) component).setEnabled(false);
+            }
+             if (component instanceof JRadioButton) {
+                ((JRadioButton) component).setEnabled(false);
+            }
+            btgPagamento.clearSelection();
+        }
         for (Component component : getContentPane().getComponents()) {
             if (!(component instanceof JLabel)) {
                 component.setEnabled(false);
@@ -60,18 +71,31 @@ public class frmEfetuarMat extends javax.swing.JFrame {
 
         btnConsultar.setEnabled(true);
         txtCPFAluno.setEnabled(true);
+        btnSair.setEnabled(true);
+        cmbCurso.setEnabled(true);
+        cmbTurma.setEnabled(true);
+        txtDtMatricula.setEnabled(true);
+
+        if (rbtnAVista.isSelected()) {
+            rbtnAVista.setSelected(false);
+        } else {
+            rbtnParcelado.setSelected(false);
+        }
+        
+        cmbCurso.setSelectedIndex(0);
     }
 
     private Matricula formToObject() {
 
         Matricula matricula = new Matricula(txtDtMatricula.getText().replaceAll("[^0-9]", ""));
-        Aluno aluno = daoAluno.consultar(txtCPFAluno.getText());
+        Aluno aluno = daoAluno.consultar(txtCPFAluno.getText().replaceAll("[^0-9]", ""));
         Turma turma = daoTurma.consultar(cmbTurma.getSelectedItem().toString());
         AVista aVista = new AVista();
         APrazo aPrazo = new APrazo();
 
         matricula.setAluno(aluno);
         matricula.setTurma(turma);
+
         if (rbtnAVista.isSelected()) {
             aVista.setAgencia(Integer.parseInt(txtAgencia.getText()));
             aVista.setNCheque(Integer.parseInt(txtNCheque.getText()));
@@ -474,7 +498,7 @@ public class frmEfetuarMat extends javax.swing.JFrame {
 
     private void cmbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCursoActionPerformed
 
-        DecimalFormat dFormat = new DecimalFormat("#,##0.00");
+       DecimalFormat dFormat = new DecimalFormat("#,##0.00");
         ArrayList<Turma> turmas;
         turmas = daoTurma.consultarTurmas(cmbCurso.getSelectedItem().toString());
         DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
@@ -534,18 +558,14 @@ public class frmEfetuarMat extends javax.swing.JFrame {
                         btnInserir.setEnabled(false);
                         btnAlterar.setEnabled(true);
                         btnExcluir.setEnabled(true);
-
+                        txtDtMatricula.setText(mat.getData());
                         if (mat.getAprazo() != null) {
 
                             rbtnParcelado.setSelected(true);
-                            txtQtdeMensal.setText(String.valueOf(mat.getAprazo().getQtdeMensalidade()));
-                            txtTxJuros.setText(String.valueOf(mat.getAprazo().getTaxaJuros()));
-                            txtDtVencto.setText(String.valueOf(mat.getAprazo().getDtVencimento()));
+
                         } else {
                             rbtnAVista.setSelected(true);
-                            txtAgencia.setText(String.valueOf(mat.getAvista().getAgencia()));
-                            txtNCheque.setText(String.valueOf(mat.getAvista().getNCheque()));
-                            txtDtPagto.setText(String.valueOf(mat.getAvista().getPreData()));
+
                         }
 
                     } else {
@@ -575,7 +595,7 @@ public class frmEfetuarMat extends javax.swing.JFrame {
             daoMatricula.inserir(matricula);
             JOptionPane.showMessageDialog(this, "A Matrícula foi inserida com sucesso!", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
             limparCampos();
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnInserirActionPerformed
@@ -587,12 +607,15 @@ public class frmEfetuarMat extends javax.swing.JFrame {
             daoMatricula.alterar(matricula);
             JOptionPane.showMessageDialog(this, "A Matrícula foi alterada com sucesso!", "Cadastro", JOptionPane.INFORMATION_MESSAGE);
             limparCampos();
-        } catch (Exception e) {
+        } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void rbtnAVistaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtnAVistaItemStateChanged
+        String cpf = txtCPFAluno.getText().replaceAll("[^0-9]", "");
+        Matricula mat = daoMatricula.consultar(cpf, cmbTurma.getSelectedItem().toString());
+
         txtAgencia.setEnabled(true);
         txtNCheque.setEnabled(true);
         txtDtPagto.setEnabled(true);
@@ -601,12 +624,21 @@ public class frmEfetuarMat extends javax.swing.JFrame {
         txtTxJuros.setEnabled(false);
         txtDtVencto.setEnabled(false);
 
+        if (mat.getAvista() != null) {
+            txtAgencia.setText(String.valueOf(mat.getAvista().getAgencia()));
+            txtNCheque.setText(String.valueOf(mat.getAvista().getNCheque()));
+            txtDtPagto.setText(String.valueOf(mat.getAvista().getPreData()));
+        }
+
         txtQtdeMensal.setText("");
         txtTxJuros.setText("");
         txtDtVencto.setText("");
     }//GEN-LAST:event_rbtnAVistaItemStateChanged
 
     private void rbtnParceladoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtnParceladoItemStateChanged
+        String cpf = txtCPFAluno.getText().replaceAll("[^0-9]", "");
+        Matricula mat = daoMatricula.consultar(cpf, cmbTurma.getSelectedItem().toString());
+
         txtQtdeMensal.setEnabled(true);
         txtTxJuros.setEnabled(true);
         txtDtVencto.setEnabled(true);
@@ -614,6 +646,11 @@ public class frmEfetuarMat extends javax.swing.JFrame {
         txtAgencia.setEnabled(false);
         txtNCheque.setEnabled(false);
         txtDtPagto.setEnabled(false);
+        if (mat.getAprazo() != null) {
+            txtQtdeMensal.setText(String.valueOf(mat.getAprazo().getQtdeMensalidade()));
+            txtTxJuros.setText(String.valueOf(mat.getAprazo().getTaxaJuros()));
+            txtDtVencto.setText(String.valueOf(mat.getAprazo().getDtVencimento()));
+        }
 
         txtAgencia.setText("");
         txtNCheque.setText("");
