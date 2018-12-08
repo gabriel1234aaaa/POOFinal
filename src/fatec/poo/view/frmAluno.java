@@ -463,9 +463,14 @@ public class frmAluno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        Conexao con = new Conexao("BD1711046", "BD1711046");
+        /*Conexao con = new Conexao("BD1711046", "BD1711046");
         con.setDriver("oracle.jdbc.driver.OracleDriver");
-        con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");*/
+
+        Conexao con = new Conexao("SYSTEM", "3xyei57n");
+        con.setDriver("oracle.jdbc.driver.OracleDriver");
+        con.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        
         daoAln = new DaoAluno(con.conectar());
         daoInstrutor = new DaoInstrutor(con.conectar());
     }//GEN-LAST:event_formWindowOpened

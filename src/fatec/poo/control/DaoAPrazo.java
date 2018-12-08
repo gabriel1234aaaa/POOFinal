@@ -18,22 +18,45 @@ public class DaoAPrazo {
         PreparedStatement ps = null;
 
         try {
-            ps = conn.prepareStatement("INSERT INTO APRAZO(CODIGO, VALOR, "
-                    + "DTVENCIMENTO, TAXAJUROS, QTDEMENSALIDADE) "
+            ps = conn.prepareStatement("INSERT INTO APRAZO(VALOR, "
+                    + "DTVENCIMENTO, TAXAJUROS, QTDEMENSALIDADE, CODIGO) "
                     + "VALUES (?, ?, ?, ?, ?)");
 
-            ps.setInt(1, aprazo.getCodigo());
-            ps.setDouble(2, aprazo.getValor());
-            ps.setString(3, aprazo.getDtVencimento());
-            ps.setDouble(4, aprazo.getTaxaJuros());
-            ps.setInt(5, aprazo.getQtdeMensalidade());
+            ps.setDouble(1, aprazo.getValor());
+            ps.setString(2, aprazo.getDtVencimento());
+            ps.setDouble(3, aprazo.getTaxaJuros());
+            ps.setInt(4, aprazo.getQtdeMensalidade());
+            ps.setInt(5, aprazo.getCodigo());
 
             ps.execute();
+            ps.close();
 
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
 
+    }
+
+    public int ultRegistro() {
+        int ultReg = 0;
+
+        PreparedStatement ps = null;
+
+        try {
+            ps = conn.prepareStatement("SELECT CODIGO FROM APRAZO "
+                    + "WHERE ROWNUM = 1 ORDER BY CODIGO DESC");
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next() == true) {
+                ultReg = rs.getInt("CODIGO");
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+
+        return (ultReg);
     }
 
     public void alterar(APrazo aprazo) {
@@ -52,6 +75,7 @@ public class DaoAPrazo {
 
             ps.execute();
 
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -78,6 +102,7 @@ public class DaoAPrazo {
                 aprazo.setTaxaJuros(rs.getDouble("TAXAJUROS"));
                 aprazo.setValor(rs.getDouble("VALOR"));
             }
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -101,6 +126,7 @@ public class DaoAPrazo {
             ps.setInt(1, aprazo.getCodigo());
 
             ps.execute();
+            ps.close();
 
         } catch (SQLException ex) {
             System.out.println(ex.toString());

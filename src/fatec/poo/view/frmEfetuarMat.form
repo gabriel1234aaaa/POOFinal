@@ -378,9 +378,9 @@
                           <Component id="txtQtdeMensal" min="-2" pref="60" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                           <Component id="lblTxJuros" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                          <Component id="txtTxJuros" min="-2" pref="70" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="txtTxJuros" min="-2" pref="74" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                           <Component id="lxlDtVencto" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                           <Component id="txtDtVencto" min="-2" pref="70" max="-2" attributes="0"/>
@@ -409,9 +409,9 @@
                       <Component id="lblQtdeMensal" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtQtdeMensal" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblTxJuros" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtTxJuros" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lxlDtVencto" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtDtVencto" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtTxJuros" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="10" max="32767" attributes="0"/>
               </Group>
@@ -506,14 +506,6 @@
             <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="txtNCheque"/>
           </AccessibilityProperties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtTxJuros">
-          <Properties>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-          <AccessibilityProperties>
-            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="txtTxJuros"/>
-          </AccessibilityProperties>
-        </Component>
         <Component class="javax.swing.JLabel" name="lblDtPagto">
           <Properties>
             <Property name="text" type="java.lang.String" value="Data Pagto."/>
@@ -551,6 +543,14 @@
           <AccessibilityProperties>
             <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="txtDtVencto"/>
           </AccessibilityProperties>
+        </Component>
+        <Component class="javax.swing.JFormattedTextField" name="txtTxJuros">
+          <Properties>
+            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
+              <Format format="#,##0.00" subtype="-1" type="0"/>
+            </Property>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

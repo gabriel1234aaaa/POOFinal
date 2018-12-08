@@ -28,7 +28,7 @@ public class DaoAluno {
             ps.setString(2, aluno.getEscolaridade());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -46,7 +46,7 @@ public class DaoAluno {
             ps.setString(2, aluno.getCPF());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -81,7 +81,7 @@ public class DaoAluno {
                 aluno.setEmail(rs.getString("EMAIL"));
                 aluno.setEscolaridade(rs.getString("ESCOLARIDADE"));
             }
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -108,7 +108,7 @@ public class DaoAluno {
             ps.setString(1, aluno.getCPF());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }

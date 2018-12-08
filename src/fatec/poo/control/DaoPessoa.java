@@ -10,7 +10,7 @@ import java.sql.SQLException;
  * @author 0030481711046
  */
 public class DaoPessoa {
-    
+
     private Connection conn;
 
     public DaoPessoa(Connection conn) {
@@ -44,7 +44,7 @@ public class DaoPessoa {
             ps.setString(15, pessoa.getEmail());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -76,7 +76,7 @@ public class DaoPessoa {
             ps.setString(15, pessoa.getCPF());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -90,10 +90,10 @@ public class DaoPessoa {
             ps.setString(1, pessoa.getCPF());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
     }
-    
+
 }

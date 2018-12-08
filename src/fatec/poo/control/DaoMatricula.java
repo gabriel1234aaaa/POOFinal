@@ -31,12 +31,22 @@ public class DaoMatricula {
             ps.setInt(2, matricula.getQtdeFaltas());
             ps.setDouble(3, matricula.getNota());
             ps.setString(4, matricula.getAluno().getCPF());
-            ps.setInt(5, matricula.getAprazo().getCodigo());
-            ps.setInt(6, matricula.getAvista().getCodigo());
+            
+             if (matricula.getAprazo() == null) {
+                ps.setNull(5, Types.INTEGER);
+            } else {
+                ps.setInt(5, matricula.getAprazo().getCodigo());
+            }
+
+            if (matricula.getAvista() == null) {
+                ps.setNull(6, Types.INTEGER);
+            } else {
+                ps.setInt(6, matricula.getAvista().getCodigo());
+            }
             ps.setString(7, matricula.getTurma().getSiglaTurma());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -48,32 +58,27 @@ public class DaoMatricula {
 
         try {
             ps = conn.prepareStatement("UPDATE MATRICULA SET DTMATRICULA = ?, "
-                    + "QTDEFALTAS = ?, NOTA = ?, CODAPRAZO = ?, "
-                    + "CODAVISTA = ? WHERE SIGLATURMA = ? AND CPFALUNO = ?");
+                    + "CODAPRAZO = ?, CODAVISTA = ? WHERE SIGLATURMA = ? "
+                    + "AND CPFALUNO = ?");
 
             ps.setString(1, matricula.getData());
-            ps.setInt(2, matricula.getQtdeFaltas());
-            ps.setDouble(3, matricula.getNota());
 
             if (matricula.getAprazo() == null) {
-                ps.setNull(4, Types.INTEGER);
+                ps.setNull(2, Types.INTEGER);
             } else {
-                ps.setInt(4, matricula.getAprazo().getCodigo());
+                ps.setInt(2, matricula.getAprazo().getCodigo());
             }
-            
+
             if (matricula.getAvista() == null) {
-                ps.setNull(5, Types.INTEGER);
-            }else{
-                ps.setInt(5,matricula.getAvista().getCodigo());
+                ps.setNull(3, Types.INTEGER);
+            } else {
+                ps.setInt(3, matricula.getAvista().getCodigo());
             }
-            System.out.println(matricula.getTurma().getSiglaTurma());
-            ps.setString(6, matricula.getTurma().getSiglaTurma());
-            System.out.println(matricula.getAluno().getCPF());
-            ps.setString(7, matricula.getAluno().getCPF());
-            
+            ps.setString(4, matricula.getTurma().getSiglaTurma());
+            ps.setString(5, matricula.getAluno().getCPF());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -122,7 +127,7 @@ public class DaoMatricula {
 
                 matricula.setTurma(dt.consultar(sigla));
             }
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -139,7 +144,7 @@ public class DaoMatricula {
             ps.setString(2, matricula.getTurma().getSiglaTurma());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }

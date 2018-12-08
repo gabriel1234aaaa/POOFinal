@@ -18,17 +18,17 @@ public class DaoAVista {
         PreparedStatement ps = null;
 
         try {
-            ps = conn.prepareStatement("INSERT INTO AVISTA(CODIGO, VALOR, "
-                    + "AGENCIA, NCHEQUE, PREDATA) VALUES (?, ?, ?, ?, ?)");
+            ps = conn.prepareStatement("INSERT INTO AVISTA(VALOR, "
+                    + "AGENCIA, NCHEQUE, PREDATA, CODIGO) VALUES (?, ?, ?, ?, ?)");
 
-            ps.setInt(1, avista.getCodigo());
-            ps.setDouble(2, avista.getValor());
-            ps.setInt(3, avista.getAgencia());
-            ps.setInt(4, avista.getNCheque());
-            ps.setString(5, avista.getPreData());
+            ps.setDouble(1, avista.getValor());
+            ps.setInt(2, avista.getAgencia());
+            ps.setInt(3, avista.getNCheque());
+            ps.setString(4, avista.getPreData());
+            ps.setInt(5, avista.getCodigo());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -47,9 +47,10 @@ public class DaoAVista {
             ps.setInt(2, avista.getAgencia());
             ps.setInt(3, avista.getNCheque());
             ps.setString(4, avista.getPreData());
+            ps.setInt(5, avista.getCodigo());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -62,7 +63,7 @@ public class DaoAVista {
         PreparedStatement ps = null;
 
         try {
-            ps = conn.prepareStatement("SELECT * FROM AVISTA ap"
+            ps = conn.prepareStatement("SELECT * FROM AVISTA ap "
                     + "WHERE ap.CODIGO = ?");
 
             ps.setInt(1, codigo);
@@ -76,11 +77,34 @@ public class DaoAVista {
                 avista.setNCheque(rs.getInt("NCHEQUE"));
                 avista.setPreData(rs.getString("PREDATA"));
             }
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
 
         return (avista);
+    }
+
+    public int ultRegistro() {
+        int ultReg = 0;
+
+        PreparedStatement ps = null;
+
+        try {
+            ps = conn.prepareStatement("SELECT CODIGO FROM AVISTA "
+                    + "WHERE ROWNUM = 1 ORDER BY CODIGO DESC");
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next() == true) {
+                ultReg = rs.getInt("CODIGO");
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+
+        return (ultReg);
     }
 
     public void excluir(AVista avista) {
@@ -100,6 +124,7 @@ public class DaoAVista {
 
             ps.execute();
 
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }

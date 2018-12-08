@@ -43,7 +43,7 @@ public class DaoCurso {
             ps.setString(7, curso.getPrograma());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -66,7 +66,7 @@ public class DaoCurso {
             ps.setString(7, curso.getSigla());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -91,7 +91,7 @@ public class DaoCurso {
 
                 cursos.add(curso);
             }
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -118,7 +118,7 @@ public class DaoCurso {
                 curso.setPrograma(rs.getString("PROGRAMA"));
 
             }
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -141,7 +141,7 @@ public class DaoCurso {
             ps.setString(1, curso.getSigla());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }

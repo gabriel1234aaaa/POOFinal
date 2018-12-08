@@ -39,7 +39,7 @@ public class DaoInstrutor {
             ps.setString(3, instrutor.getAreaAtuacao());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -58,7 +58,7 @@ public class DaoInstrutor {
             ps.setString(3, instrutor.getCPF());
 
             ps.execute();
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -94,7 +94,7 @@ public class DaoInstrutor {
                 instrutor.setFormacao(rs.getString("FORMACAO"));
                 instrutor.setAreaAtuacao(rs.getString("AREAATUACAO"));
             }
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -131,7 +131,7 @@ public class DaoInstrutor {
 
                 instrutores.add(instrutor);
             }
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
@@ -154,7 +154,7 @@ public class DaoInstrutor {
             ps.execute();
 
             daoPessoa.excluir(instrutor);
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
