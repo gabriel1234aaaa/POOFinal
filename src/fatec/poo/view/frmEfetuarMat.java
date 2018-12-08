@@ -51,6 +51,7 @@ public class frmEfetuarMat extends javax.swing.JFrame {
                 ((JTextField) component).setText("");
                 ((JTextField) component).setEnabled(false);
             }
+ 
             if (component instanceof JRadioButton) {
                 ((JRadioButton) component).setEnabled(false);
             }
@@ -63,10 +64,11 @@ public class frmEfetuarMat extends javax.swing.JFrame {
             if (component instanceof JTextField) {
                 ((JTextField) component).setText("");
             } else if (component instanceof JFormattedTextField) {
-                ((JFormattedTextField) component).setValue("");
+                ((JFormattedTextField) component).setValue(" ");
             } else if (component instanceof JComboBox) {
                 ((JComboBox) component).setSelectedIndex(0);
             }
+            
         }
 
         btnConsultar.setEnabled(true);
@@ -237,6 +239,11 @@ public class frmEfetuarMat extends javax.swing.JFrame {
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -513,20 +520,16 @@ public class frmEfetuarMat extends javax.swing.JFrame {
         if (modelo.getSize() > 0) {
             cmbTurma.setSelectedIndex(0);
             btnConsultar.setEnabled(true);
-        }else{
+        } else {
             btnConsultar.setEnabled(false);
         }
-        
+
     }//GEN-LAST:event_cmbCursoActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        /*Conexao con = new Conexao("BD1711046", "BD1711046");
+        Conexao con = new Conexao("BD1711046", "BD1711046");
         con.setDriver("oracle.jdbc.driver.OracleDriver");
-        con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");*/
-
-        Conexao con = new Conexao("SYSTEM", "3xyei57n");
-        con.setDriver("oracle.jdbc.driver.OracleDriver");
-        con.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        con.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
 
         daoTurma = new DaoTurma(con.conectar());
         daoCurso = new DaoCurso(con.conectar());
@@ -637,6 +640,8 @@ public class frmEfetuarMat extends javax.swing.JFrame {
                     CodAvista = daoAVista.ultRegistro() + 1;
                     matricula.getAvista().setCodigo(CodAvista);
                     daoAVista.inserir(matricula.getAvista());
+                    if(CodAprazo != 0)
+                        daoAPrazo.excluir(mat.getAprazo());
                 } else {
                     matricula.getAvista().setCodigo(CodAvista);
                     daoAVista.alterar(matricula.getAvista());
@@ -647,6 +652,8 @@ public class frmEfetuarMat extends javax.swing.JFrame {
                     CodAprazo = daoAPrazo.ultRegistro() + 1;
                     matricula.getAprazo().setCodigo(CodAprazo);
                     daoAPrazo.inserir(matricula.getAprazo());
+                    if(CodAvista != 0)
+                        daoAVista.excluir(mat.getAvista());
                 } else {
                     matricula.getAprazo().setCodigo(CodAprazo);
                     daoAPrazo.alterar(matricula.getAprazo());
@@ -705,6 +712,22 @@ public class frmEfetuarMat extends javax.swing.JFrame {
         txtNCheque.setText("");
         txtDtPagto.setText("");
     }//GEN-LAST:event_rbtnParceladoItemStateChanged
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        try {
+            daoMatricula.excluir(mat);
+            if (mat.getAprazo() != null) {
+                daoAPrazo.excluir(mat.getAprazo());
+            } else {
+                daoAVista.excluir(mat.getAvista());
+            }
+            JOptionPane.showMessageDialog(this, "A Matrícula foi excluída com sucesso!", "Exclusão", JOptionPane.INFORMATION_MESSAGE);
+            limparCampos();
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(this, "ERRO: " + e.getMessage(), "ERRO!", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments
